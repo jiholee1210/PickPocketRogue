@@ -55,4 +55,48 @@ public class Enemy
 
         return enemy;
     }
+
+    public void SetHp(float hp) {
+        this.currentHp = hp;
+    }
+
+    public void SetDmg(float dmg) {
+        this.attackDmg = dmg;
+    }
+
+    public void SetAtkType(int atkType) {
+        this.attackType = atkType;
+    }
+
+    public void SetDef(float def) {
+        this.defense = def;
+    }
+
+    public void SetDefType(int defType) {
+        this.defenseType = defType;
+    }
+
+    public float GetHp() {
+        return currentHp;
+    }
+
+    public float GetDmg() {
+        return attackDmg;
+    }
+
+    public int GetAttackType() {
+        return attackType;
+    }
+
+    public float GetDef() {
+        return defense;
+    }
+
+    public int GetDefType() {
+        return defenseType;
+    }
+
+    public EnemyType GetEnemyType() {
+        return enemyType;
+    }
 }
