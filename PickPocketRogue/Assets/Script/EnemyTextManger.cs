@@ -5,12 +5,13 @@ using UnityEngine.UI;
 
 public class EnemyTextManger : MonoBehaviour
 {
-    public Text text;
+    private Text text;
     private EnemyManager enemyManager;
 
     // Start is called before the first frame update
     void Start()
     {
+        text = GameObject.Find("Canvas/Enemy Hp").GetComponent<Text>();
         enemyManager = GetComponent<EnemyManager>();
     }
 

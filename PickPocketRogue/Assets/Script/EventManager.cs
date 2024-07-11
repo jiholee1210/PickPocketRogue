@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -7,18 +8,23 @@ public class EventManager : MonoBehaviour
 {
     public Button playerAtkBtn;
     public GameObject player;
-    public GameObject enemy;
+    [SerializeField] private GameObject enemy;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
+    void OnEnable(){
+        EnemyManager.OnEnemySpawned += UpdateEnemyReference;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+    void OnDisable() {
+        EnemyManager.OnEnemySpawned -= UpdateEnemyReference;
+    }
+
+    void Start() {
+        enemy = GameObject.FindWithTag("Enemy");
+    }
+
+    void UpdateEnemyReference(EnemyManager enemyManager) {
+        Debug.Log("적 생성 이벤트 받음");
+        enemy = enemyManager.gameObject;
     }
 
     public void OnClick() {
