@@ -12,10 +12,12 @@ public class EventManager : MonoBehaviour
 
     void OnEnable(){
         EnemyManager.OnEnemySpawned += UpdateEnemyReference;
+        EnemyManager.OnEnemyDiedWithDrop += HandleEnemyDiedWithDrop;
     }
 
     void OnDisable() {
         EnemyManager.OnEnemySpawned -= UpdateEnemyReference;
+        EnemyManager.OnEnemyDiedWithDrop -= HandleEnemyDiedWithDrop;
     }
 
     void Start() {
@@ -25,6 +27,10 @@ public class EventManager : MonoBehaviour
     void UpdateEnemyReference(EnemyManager enemyManager) {
         Debug.Log("적 생성 이벤트 받음");
         enemy = enemyManager.gameObject;
+    }
+
+    void HandleEnemyDiedWithDrop(Weapon weapon) {
+        player.GetComponent<PlayerManager>().AddWeaponToInventory(weapon);
     }
 
     public void OnClick() {

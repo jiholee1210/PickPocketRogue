@@ -5,7 +5,8 @@ using UnityEngine.UI;
 
 public class PlayerTextManager : MonoBehaviour
 {
-    public Text text;
+    public Text playerHpText;
+    public Text playerWeaponText;
     private PlayerManager playerManager;
     // Start is called before the first frame update
     void Start()
@@ -16,6 +17,11 @@ public class PlayerTextManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        text.text = "Player Hp : " + playerManager.player.GetHp();
+        playerHpText.text = "Player Hp : " + playerManager.player.GetHp();
+        if(playerManager.playerInventory.GetWeapon() != null) { 
+            playerWeaponText.text = "Player Weapon : " + playerManager.playerInventory.GetWeapon().GetWeaponName();
+        } else {
+            playerWeaponText.text = "Player Weapon : 없음";
+        }
     }
 }

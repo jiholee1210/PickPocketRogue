@@ -11,15 +11,16 @@ public class Enemy
         Dragon
     }
 
-    [SerializeField] private float maxHp;
-    [SerializeField] private float currentHp;
+    private float maxHp;
+    private float currentHp;
 
-    [SerializeField] private float attackDmg;
-    [SerializeField] private int attackType;
-    [SerializeField] private float defense;
-    [SerializeField] private int defenseType;
+    private float attackDmg;
+    private int attackType;
+    private float defense;
+    private int defenseType;
+    private float dropRatio;
 
-    [SerializeField] private EnemyType enemyType;
+    private EnemyType enemyType;
 
     public Enemy() {
 
@@ -32,6 +33,7 @@ public class Enemy
         this.attackType = _attackType;
         this.defense = _defense;
         this.defenseType = _defenseType;
+        this.dropRatio = Random.Range(0.0f, 100.0f);
         this.enemyType = _enemyType;
     }
 
@@ -98,5 +100,9 @@ public class Enemy
 
     public EnemyType GetEnemyType() {
         return enemyType;
+    }
+
+    public float GetDropRatio() {
+        return dropRatio;
     }
 }

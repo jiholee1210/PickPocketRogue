@@ -2,17 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Armor : MonoBehaviour
+public class Armor
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    private string armorName;
+    private int armorRarity;
+    private float armorDef;
+    private int armorType;
+    private bool canGet;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }
