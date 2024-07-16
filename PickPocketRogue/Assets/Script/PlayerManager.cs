@@ -32,7 +32,7 @@ public class PlayerManager : MonoBehaviour
     }
 
     private void UpdatePlayerStats() {
-        player.SetDmg(player.GetDmg() + playerInventory.GetWeapon().GetWeaponDmg());
+        player.SetDmg(player.GetDefaultDmg() + playerInventory.GetWeapon().GetWeaponDmg());
         Debug.Log("플레이어 장비 스탯 반영!!" + player.GetDmg() + " 플레이어 무기 스탯 : " + playerInventory.GetWeapon().GetWeaponDmg());
     }
 }

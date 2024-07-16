@@ -9,6 +9,7 @@ public class EventManager : MonoBehaviour
     public Button playerAtkBtn;
     public GameObject player;
     [SerializeField] private GameObject enemy;
+    private PopupManager popupManager;
 
     void OnEnable(){
         EnemyManager.OnEnemySpawned += UpdateEnemyReference;
@@ -22,6 +23,7 @@ public class EventManager : MonoBehaviour
 
     void Start() {
         enemy = GameObject.FindWithTag("Enemy");
+        popupManager = FindObjectOfType<PopupManager>();
     }
 
     void UpdateEnemyReference(EnemyManager enemyManager) {
@@ -30,7 +32,7 @@ public class EventManager : MonoBehaviour
     }
 
     void HandleEnemyDiedWithDrop(Weapon weapon) {
-        player.GetComponent<PlayerManager>().AddWeaponToInventory(weapon);
+        popupManager.ShowPopup(weapon);
     }
 
     public void OnClick() {

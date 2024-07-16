@@ -16,18 +16,30 @@ public class Weapon
     private WeaponName weaponName;
     private int weaponRarity;
     private float weaponDmg;
-    private int weaponType; // 1이 타격, 2가 관통, 3이 마법
+    private int weaponTypeCode; // 1이 타격, 2가 관통, 3이 마법
+    private string weaponType;
     private bool canGet;
 
     public Weapon() {
 
     }
 
-    public Weapon(WeaponName _weaponName, int _weaponRarity, float _weaponDmg, int _weaponType, bool _canGet) {
+    public Weapon(WeaponName _weaponName, int _weaponRarity, float _weaponDmg, int _weaponTypeCode, bool _canGet) {
         this.weaponName = _weaponName;
         this.weaponRarity = _weaponRarity;
         this.weaponDmg = _weaponDmg;
-        this.weaponType = _weaponType;
+        this.weaponTypeCode = _weaponTypeCode;
+        switch(_weaponTypeCode) {
+            case 1:
+                this.weaponType = "타격";
+                break;
+            case 2:
+                this.weaponType = "관통";
+                break;
+            case 3:
+                this.weaponType = "마법";
+                break;
+        }
         this.canGet = _canGet;
     }
 
@@ -64,7 +76,10 @@ public class Weapon
     public float GetWeaponDmg() {
         return weaponDmg;
     }
-    public float GetWeaponType() {
+    public float GetWeaponTypeCode() {
+        return weaponTypeCode;
+    }
+    public string GetWeaponType() {
         return weaponType;
     }
     public bool GetCanGet() {
