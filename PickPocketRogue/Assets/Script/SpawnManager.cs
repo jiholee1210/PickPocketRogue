@@ -1,11 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-// SpawnManager에서 Human 클래스와 Enemy 클래스 스폰을 통합시킴. 따라서 사용은 하지 않고 참고용
-public class EnemySpawner : MonoBehaviour
+
+public class SpawnManager : MonoBehaviour
 {
-    public static EnemySpawner Instance;
+    public static SpawnManager Instance;
     public GameObject enemyPrefab;
+    private GameManager gameManager;
 
     private void Awake() {
         if (Instance == null) {
@@ -16,7 +17,12 @@ public class EnemySpawner : MonoBehaviour
         }
     }
 
-    public void SpawnEnemy() {
+    void Start() {
+        gameManager = GetComponent<GameManager>();
+        SpawnObject();
+    }
+    
+    public void SpawnObject() {
         Instantiate(enemyPrefab, new Vector3(5, -2, 0), Quaternion.identity);
     }
 }

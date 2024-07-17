@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class Player
 {
+    private float maxExp;
+    private float currentExp;
+    private int level;
     private float maxHp;
     private float currentHp;
 
@@ -18,6 +21,9 @@ public class Player
     }
 
     public Player(float _maxHp, float _defaultDmg, float _defense, float _pickRatio) {
+        this.level = 1;
+        this.maxExp = 50f;
+        this.currentExp = 0f;
         this.maxHp = _maxHp;
         this.currentHp = _maxHp;
         this.defaultDmg = _defaultDmg;
@@ -26,6 +32,15 @@ public class Player
         this.pickRatio = _pickRatio;
     }
 
+    public void SetLevel(int level) {
+        this.level = level;
+    }
+    public void SetMaxExp(float maxExp) {
+        this.maxExp = maxExp;
+    }
+    public void SetExp(float currentExp) {
+        this.currentExp = currentExp;
+    }
     public void SetMaxHp(float maxHp) {
         this.maxHp = maxHp;
     }
@@ -49,6 +64,17 @@ public class Player
         this.pickRatio = pickRatio;
     }
 
+    public int GetLevel() {
+        return level;
+    }
+
+    public float GetMaxExp() {
+        return maxExp;
+    }
+
+    public float GetExp() {
+        return currentExp;
+    }
     public float GetMaxHp() {
         return maxHp;
     }

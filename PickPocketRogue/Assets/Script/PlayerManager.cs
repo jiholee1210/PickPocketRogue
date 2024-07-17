@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -34,5 +35,19 @@ public class PlayerManager : MonoBehaviour
     private void UpdatePlayerStats() {
         player.SetDmg(player.GetDefaultDmg() + playerInventory.GetWeapon().GetWeaponDmg());
         Debug.Log("플레이어 장비 스탯 반영!!" + player.GetDmg() + " 플레이어 무기 스탯 : " + playerInventory.GetWeapon().GetWeaponDmg());
+    }
+
+    public void GetExpAndLevelUp(float exp) {
+        float myExp = player.GetExp() + exp;
+
+        if(myExp >= player.GetMaxExp()) {
+            player.SetExp(myExp - player.GetMaxExp());
+            player.SetMaxExp(player.GetMaxExp() * 2f);
+            player.SetLevel(player.GetLevel() + 1);
+            Debug.Log("레벨 업!!");
+        } else {
+            player.SetExp(myExp);
+            Debug.Log("Max 경험치 : " + player.GetMaxExp() + "현재 경험치 : " + player.GetExp());
+        }
     }
 }

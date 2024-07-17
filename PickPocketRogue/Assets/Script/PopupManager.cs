@@ -18,6 +18,9 @@ public class PopupManager : MonoBehaviour
         popupWindow.SetActive(false);    
     }
 
+    void Update() {
+        
+    }
     public void ShowPopup(Weapon weapon) {
         newWeapon = weapon;
         

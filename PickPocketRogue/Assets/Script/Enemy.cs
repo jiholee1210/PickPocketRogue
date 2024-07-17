@@ -8,7 +8,8 @@ public class Enemy
         Slime,
         Skeleton,
         Orc,
-        Dragon
+        Dragon,
+        Human
     }
 
     private float maxHp;
@@ -19,7 +20,7 @@ public class Enemy
     private float defense;
     private int defenseType;
     private float dropRatio;
-
+    private Weapon weapon;
     private EnemyType enemyType;
 
     public Enemy() {
@@ -34,6 +35,8 @@ public class Enemy
         this.defense = _defense;
         this.defenseType = _defenseType;
         this.dropRatio = Random.Range(0.0f, 100.0f);
+        Weapon.WeaponName weaponName = (Weapon.WeaponName)Random.Range(0, System.Enum.GetValues(typeof(Weapon.WeaponName)).Length);
+        this.weapon = Weapon.SetWeapon(weaponName);
         this.enemyType = _enemyType;
     }
 
@@ -52,6 +55,12 @@ public class Enemy
                 break;
             case EnemyType.Dragon:
                 enemy = new Enemy(100.0f, 20.0f, 3, 10.0f, 2, EnemyType.Dragon);
+                break;
+            case EnemyType.Human:
+                enemy = new Enemy(50.0f, 0f, 0, 10f, 0, EnemyType.Human);
+                enemy.SetDmg(enemy.GetWeapon().GetWeaponDmg());
+                enemy.SetAtkType(enemy.GetWeapon().GetWeaponTypeCode());
+                enemy.SetDropRatio(0f);
                 break;
         }
 
@@ -76,6 +85,14 @@ public class Enemy
 
     public void SetDefType(int defType) {
         this.defenseType = defType;
+    }
+
+    public void SetWeapon(Weapon weapon) {
+        this.weapon = weapon;
+    }
+
+    public void SetDropRatio(float dropRatio) {
+        this.dropRatio = dropRatio;
     }
 
     public float GetHp() {
@@ -104,5 +121,9 @@ public class Enemy
 
     public float GetDropRatio() {
         return dropRatio;
+    }
+
+    public Weapon GetWeapon() {
+        return weapon;
     }
 }

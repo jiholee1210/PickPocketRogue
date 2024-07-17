@@ -76,7 +76,7 @@ public class Weapon
     public float GetWeaponDmg() {
         return weaponDmg;
     }
-    public float GetWeaponTypeCode() {
+    public int GetWeaponTypeCode() {
         return weaponTypeCode;
     }
     public string GetWeaponType() {
