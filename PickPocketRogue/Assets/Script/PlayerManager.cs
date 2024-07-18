@@ -9,32 +9,46 @@ public class PlayerManager : MonoBehaviour
 {
     public Player player;
     public PlayerInventory playerInventory;
-    // Start is called before the first frame update
-    void Start()
-    {
-        player = new Player(10.0f, 5.0f, 5.0f, 1.0f);
+    public PlayerTextManager playerTextManager;
+    
+    void Awake() {
+        player = new Player(10.0f, 25.0f, 20.0f, 1.0f);
         playerInventory = new PlayerInventory();
     }
 
-    // Update is called once per frame
-    void Update()
+    void Start()
     {
-        
+        playerTextManager = GetComponent<PlayerTextManager>();
+        playerTextManager.SetPlayerStatText(this);
+        playerTextManager.SetPlayerWeaponText(this);
     }
 
-    public void Attack(Enemy enemy) {
+
+    // EventManager에서 기능을 대체 중
+    public void Attack(Enemy enemy) { 
         Debug.Log("플레이어 공격");
         enemy.SetHp(enemy.GetHp() - player.GetDmg());
     }
 
     public void AddWeaponToInventory(Weapon weapon) {
         playerInventory.SetWeapon(weapon);
-        UpdatePlayerStats();
+        playerTextManager.SetPlayerWeaponText(this);
+        UpdatePlayerStatsWithWeapon();
+    }
+
+    private void UpdatePlayerStatsWithWeapon() {
+        player.SetDmg(player.GetDefaultDmg() + playerInventory.GetWeapon().GetWeaponDmg());
+        playerTextManager.SetPlayerStatText(this);
+        Debug.Log("플레이어 장비 스탯 반영!!" + player.GetDmg() + " 플레이어 무기 스탯 : " + playerInventory.GetWeapon().GetWeaponDmg());
     }
 
     private void UpdatePlayerStats() {
-        player.SetDmg(player.GetDefaultDmg() + playerInventory.GetWeapon().GetWeaponDmg());
-        Debug.Log("플레이어 장비 스탯 반영!!" + player.GetDmg() + " 플레이어 무기 스탯 : " + playerInventory.GetWeapon().GetWeaponDmg());
+        if(playerInventory.GetWeapon() != null) {
+            player.SetDmg(player.GetDefaultDmg() + playerInventory.GetWeapon().GetWeaponDmg());
+        } else {
+            player.SetDmg(player.GetDefaultDmg());
+        }
+        playerTextManager.SetPlayerStatText(this);
     }
 
     public void GetExpAndLevelUp(float exp) {
@@ -44,10 +58,19 @@ public class PlayerManager : MonoBehaviour
             player.SetExp(myExp - player.GetMaxExp());
             player.SetMaxExp(player.GetMaxExp() * 2f);
             player.SetLevel(player.GetLevel() + 1);
+            player.SetMaxHp(player.GetMaxHp() + 10f);
+            player.SetHp(player.GetHp() + 10f);
+            player.SetDefaultDmg(player.GetDefaultDmg() + 5f);
+            player.SetDef(player.GetDef() + 2f);
+            UpdatePlayerStats();
             Debug.Log("레벨 업!!");
         } else {
             player.SetExp(myExp);
             Debug.Log("Max 경험치 : " + player.GetMaxExp() + "현재 경험치 : " + player.GetExp());
         }
+    }
+
+    public void Die() {
+
     }
 }

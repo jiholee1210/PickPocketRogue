@@ -57,7 +57,7 @@ public class Enemy
                 enemy = new Enemy(100.0f, 20.0f, 3, 10.0f, 2, EnemyType.Dragon);
                 break;
             case EnemyType.Human:
-                enemy = new Enemy(50.0f, 0f, 0, 10f, 0, EnemyType.Human);
+                enemy = new Enemy(50.0f, 0f, 0, 2f, 0, EnemyType.Human);
                 enemy.SetDmg(enemy.GetWeapon().GetWeaponDmg());
                 enemy.SetAtkType(enemy.GetWeapon().GetWeaponTypeCode());
                 enemy.SetDropRatio(0f);
@@ -69,6 +69,10 @@ public class Enemy
 
     public void SetHp(float hp) {
         this.currentHp = hp;
+    }
+
+    public void SetMaxHp(float maxHp) {
+        this.maxHp = maxHp;
     }
 
     public void SetDmg(float dmg) {
@@ -97,6 +101,10 @@ public class Enemy
 
     public float GetHp() {
         return currentHp;
+    }
+
+    public float GetMaxHp() {
+        return maxHp;
     }
 
     public float GetDmg() {

@@ -156,8 +156,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: 200, y: 0}
-  m_SizeDelta: {x: 500, y: 30}
+  m_AnchoredPosition: {x: 300, y: 120}
+  m_SizeDelta: {x: 300, y: 30}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!114 &78818122
 MonoBehaviour:
@@ -186,13 +186,21 @@ MonoBehaviour:
     m_BestFit: 0
     m_MinSize: 0
     m_MaxSize: 300
-    m_Alignment: 4
+    m_Alignment: 3
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: 'Player Hp : 0'
+  m_Text: 'Lv : 0
+
+    Exp : 0
+
+    Hp : 0
+
+    Dmg : 0
+
+    Def : 0'
 --- !u!222 &78818123
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -896,7 +904,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -500, y: 200}
+  m_AnchoredPosition: {x: -500, y: -400}
   m_SizeDelta: {x: 300, y: 80}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!114 &1069545363
@@ -1169,7 +1177,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -900, y: 200}
+  m_AnchoredPosition: {x: -900, y: -400}
   m_SizeDelta: {x: 300, y: 80}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!114 &1147092990
@@ -1378,6 +1386,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cbf03ef6de3094e44aec7b11ffcd4a2b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerTextManager: {fileID: 0}
 --- !u!1 &1351135508
 GameObject:
   m_ObjectHideFlags: 0
@@ -1620,7 +1629,7 @@ GameObject:
   - component: {fileID: 1892879845}
   - component: {fileID: 1892879844}
   m_Layer: 5
-  m_Name: ' Player Weapon Text'
+  m_Name: Player Weapon Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2003,8 +2012,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: -200, y: 0}
-  m_SizeDelta: {x: 500, y: 30}
+  m_AnchoredPosition: {x: -300, y: 120}
+  m_SizeDelta: {x: 300, y: 30}
   m_Pivot: {x: 1, y: 0.5}
 --- !u!114 &1968501060
 MonoBehaviour:
@@ -2033,13 +2042,17 @@ MonoBehaviour:
     m_BestFit: 0
     m_MinSize: 0
     m_MaxSize: 300
-    m_Alignment: 4
+    m_Alignment: 3
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: 'Enemy Hp : 0'
+  m_Text: 'Hp : 0
+
+    Dmg : 0
+
+    Def : 0'
 --- !u!222 &1968501061
 CanvasRenderer:
   m_ObjectHideFlags: 0

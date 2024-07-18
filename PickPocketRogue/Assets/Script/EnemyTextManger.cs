@@ -5,19 +5,27 @@ using UnityEngine.UI;
 
 public class EnemyTextManger : MonoBehaviour
 {
-    private Text text;
-    private EnemyManager enemyManager;
+    [SerializeField] private Text enemyText;
 
     // Start is called before the first frame update
+    void Awake() {
+        enemyText = GameObject.Find("Base Screen/Enemy Hp").GetComponent<Text>();
+    }
     void Start()
     {
-        text = GameObject.Find("Base Screen/Enemy Hp").GetComponent<Text>();
-        enemyManager = GetComponent<EnemyManager>();
+        
     }
 
     // Update is called once per frame
     void Update()
     {
-        text.text = "Enemy Hp = " + enemyManager.enemy.GetHp();   
+         
+    }
+
+    public void SetEnemyStatText(EnemyManager enemyManager) {
+        enemyText.text = "Hp : " + enemyManager.enemy.GetHp() + " / " + enemyManager.enemy.GetMaxHp() +
+                            "\nDmg : " + enemyManager.enemy.GetDmg() +
+                            "\nDef : " + enemyManager.enemy.GetDef();
+        
     }
 }

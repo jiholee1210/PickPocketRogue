@@ -10,15 +10,20 @@ public class EnemyManager : MonoBehaviour
     public static event Action<EnemyManager> OnEnemyDied;
 
     public Enemy enemy;
+    public EnemyTextManger enemyTextManger;
     // Start is called before the first frame update
-    void Start()
-    {
+    void Awake() {
         if(GameManager.Instance.round != 1) {
             Enemy.EnemyType randomType = (Enemy.EnemyType)UnityEngine.Random.Range(0, System.Enum.GetValues(typeof(Enemy.EnemyType)).Length - 1);
             enemy = Enemy.SetEnemy(randomType);
         } else {
             enemy = Enemy.SetEnemy(Enemy.EnemyType.Human);
         }
+    }
+    void Start()
+    {
+        enemyTextManger = GetComponent<EnemyTextManger>();
+        enemyTextManger.SetEnemyStatText(this);
         OnEnemySpawned?.Invoke(this);
         Debug.Log("적 생성" + enemy.GetEnemyType() + enemy.GetDropRatio());
     }

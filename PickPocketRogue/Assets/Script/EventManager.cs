@@ -49,7 +49,26 @@ public class EventManager : MonoBehaviour
 
     public void OnClickAttackBtn() {
         Debug.Log("공격 버튼 누름");
-        enemyManager.enemy.SetHp(enemyManager.enemy.GetHp() - playerManager.player.GetDmg());
+        float playerDmg = playerManager.player.GetDmg();
+        float playerDef = playerManager.player.GetDef();
+        float playerHp = playerManager.player.GetHp();
+
+        float enemyDmg = enemyManager.enemy.GetDmg();
+        float enemyDef = enemyManager.enemy.GetDef();
+        float enemyHp = enemyManager.enemy.GetHp();
+
+        float eDmg = playerDef > enemyDmg ? 0f : enemyDmg - playerDef;
+        float pDmg = enemyDef > playerDmg ? 0f : playerDmg - enemyDef;
+
+        enemyManager.enemy.SetHp(enemyHp - pDmg);
+        enemyManager.enemyTextManger.SetEnemyStatText(enemyManager);
+        if(enemyManager.enemy.GetHp() > 0) {
+            playerManager.player.SetHp(playerHp - eDmg);
+            playerManager.playerTextManager.SetPlayerStatText(playerManager);
+            if(playerManager.player.GetHp() < 0) {
+                playerManager.Die();
+            }
+        }
     }
 
     public void OnClickStealBtn() {
