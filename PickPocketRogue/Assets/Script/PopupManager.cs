@@ -5,17 +5,23 @@ using UnityEngine.UI;
 
 public class PopupManager : MonoBehaviour
 {
-    public GameObject popupWindow;
+    public GameObject weaponPopupWindow;
+    public GameObject ShopPopupWindow;
     public Text weaponName;
     public Text weaponDetail;
-    public Button yesBtn;
-    public Button noBtn;
-    public Weapon newWeapon;
 
+    public Text[] weaponNames;
+    public Text[] weaponDetails;
+
+    public Weapon newWeapon;
+    public Weapon[] weaponList;
+    
+    private PlayerManager playerManager;
     // Start is called before the first frame update
     void Start()
     {
-        popupWindow.SetActive(false);    
+        weaponPopupWindow.SetActive(false);    
+        playerManager = FindObjectOfType<PlayerManager>();
     }
 
     void Update() {
@@ -28,16 +34,41 @@ public class PopupManager : MonoBehaviour
         weaponDetail.text = "공격력 : " + weapon.GetWeaponDmg() + 
                             "\n타입 \t: " + weapon.GetWeaponType() + 
                             "\n레어도 : " + weapon.GetWeaponRarity();
-        popupWindow.SetActive(true);
+        weaponPopupWindow.SetActive(true);
     }
 
+    public void ShopPopup(Weapon[] weapon) {
+        weaponList = weapon;
+
+        for (int i = 0; i < weapon.Length; i++) {
+            weaponNames[i].text = weapon[i].GetWeaponName().ToString();
+            weaponDetails[i].text = "공격력 : " + weapon[i].GetWeaponDmg() + 
+                                "\n타입 \t: " + weapon[i].GetWeaponType() + 
+                                "\n레어도 : " + weapon[i].GetWeaponRarity();
+        }
+        ShopPopupWindow.SetActive(true);
+    }
+    
     public void OnYesButtonClicked() {
-        PlayerManager playerManager = FindObjectOfType<PlayerManager>();
         playerManager.AddWeaponToInventory(newWeapon);
-        popupWindow.SetActive(false);
+        weaponPopupWindow.SetActive(false);
     }
 
     public void OnNoButtonClicked() {
-        popupWindow.SetActive(false);
+        weaponPopupWindow.SetActive(false);
+    }
+
+    public void OnClickBuyButton(Button clickedButton) {
+        //playerManager.AddWeaponToInventory(newWeapon);
+        Debug.Log("buy버튼 클릭");
+        GameObject parentObject = clickedButton.transform.parent.gameObject;
+        int index = parentObject.transform.GetSiblingIndex();
+        Debug.Log((index + 1) + "번째 아이템 구매");
+        playerManager.AddWeaponToInventory(weaponList[index]);
+        parentObject.SetActive(false);
+    }
+
+    public void OnClickExitButton() {
+        ShopPopupWindow.SetActive(false);
     }
 }

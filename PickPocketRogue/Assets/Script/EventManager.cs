@@ -6,12 +6,15 @@ using UnityEngine.UI;
 
 public class EventManager : MonoBehaviour
 {
-    public Button playerAtkBtn;
+    public GameObject shopButton;
+    public GameObject passButton;
     public GameObject player;
     [SerializeField] private GameObject enemy;
     private PopupManager popupManager;
     private EnemyManager enemyManager;
     private PlayerManager playerManager;
+
+    public GameObject[] shopItems;
 
     void OnEnable(){
         EnemyManager.OnEnemySpawned += UpdateEnemyReference;
@@ -35,6 +38,13 @@ public class EventManager : MonoBehaviour
         Debug.Log("적 생성 이벤트 받음");
         enemy = _enemyManager.gameObject;
         enemyManager = _enemyManager;
+        if(enemyManager.enemy.GetEnemyType() == Enemy.EnemyType.Merchant) {
+            shopButton.SetActive(true);
+            passButton.SetActive(true);
+            for(int i = 0; i < shopItems.Length; i++) {
+                shopItems[i].SetActive(true);
+            }
+        }
     }
 
     void HandleEnemyDiedWithDrop(Weapon weapon) {
@@ -42,7 +52,8 @@ public class EventManager : MonoBehaviour
     }
 
     void HandleEnemyDied(EnemyManager enemyManager) {
-        if(enemyManager.enemy.GetEnemyType() != Enemy.EnemyType.Human) {
+        if(enemyManager.enemy.GetEnemyType() != Enemy.EnemyType.Human && enemyManager.enemy.GetEnemyType() != Enemy.EnemyType.Merchant) {
+            Debug.Log("플레이어 경험치 획득");
             playerManager.GetExpAndLevelUp(15f);
         }
     }
@@ -59,15 +70,18 @@ public class EventManager : MonoBehaviour
 
         float eDmg = playerDef > enemyDmg ? 0f : enemyDmg - playerDef;
         float pDmg = enemyDef > playerDmg ? 0f : playerDmg - enemyDef;
-
-        enemyManager.enemy.SetHp(enemyHp - pDmg);
-        enemyManager.enemyTextManger.SetEnemyStatText(enemyManager);
-        if(enemyManager.enemy.GetHp() > 0) {
-            playerManager.player.SetHp(playerHp - eDmg);
-            playerManager.playerTextManager.SetPlayerStatText(playerManager);
-            if(playerManager.player.GetHp() < 0) {
-                playerManager.Die();
+        if(enemyManager.enemy.GetEnemyType() != Enemy.EnemyType.Merchant) {
+            enemyManager.enemy.SetHp(enemyHp - pDmg);
+            enemyManager.enemyTextManger.SetEnemyStatText(enemyManager);
+            if(enemyManager.enemy.GetHp() > 0) {
+                playerManager.player.SetHp(playerHp - eDmg);
+                playerManager.playerTextManager.SetPlayerStatText(playerManager);
+                if(playerManager.player.GetHp() < 0) {
+                    playerManager.Die();
+                }
             }
+        } else {
+            Debug.Log("상인을 공격해선 안돼.");
         }
     }
 
@@ -80,5 +94,17 @@ public class EventManager : MonoBehaviour
         } else {
             Debug.Log("몬스터는 장비를 들고 다니지 않아요..");
         }
+    }
+
+    public void OnClickShopBtn() {
+        Debug.Log("상점 오픈");
+        popupManager.ShopPopup(enemyManager.weapons);
+    }
+
+    public void OnClickPassBtn() {
+        Debug.Log("상인 지나가기");
+        shopButton.SetActive(false);
+        passButton.SetActive(false);
+        enemyManager.Die();
     }
 }

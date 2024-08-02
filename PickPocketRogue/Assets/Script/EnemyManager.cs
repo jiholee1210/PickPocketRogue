@@ -11,10 +11,27 @@ public class EnemyManager : MonoBehaviour
 
     public Enemy enemy;
     public EnemyTextManger enemyTextManger;
+
+    public Weapon[] weapons = new Weapon[3];
     // Start is called before the first frame update
     void Awake() {
-        if(GameManager.Instance.round != 1) {
+        /*if(GameManager.Instance.round != 1) {
             Enemy.EnemyType randomType = (Enemy.EnemyType)UnityEngine.Random.Range(0, System.Enum.GetValues(typeof(Enemy.EnemyType)).Length - 1);
+            enemy = Enemy.SetEnemy(randomType);
+        } else if(GameManager.Instance.round == 8 && GameManager.Instance.stage % 2 == 0) {
+            enemy = Enemy.SetEnemy(Enemy.EnemyType.Merchant);
+        } else if(GameManager.Instance.round == 1) {
+            enemy = Enemy.SetEnemy(Enemy.EnemyType.Human);
+        }*/
+
+        if(GameManager.Instance.round == 8 && GameManager.Instance.stage % 2 == 0) {
+            enemy = Enemy.SetEnemy(Enemy.EnemyType.Merchant);
+            for(int i = 0; i < weapons.Length; i++) {
+                Weapon.WeaponName weaponName = (Weapon.WeaponName)UnityEngine.Random.Range(0, System.Enum.GetValues(typeof(Weapon.WeaponName)).Length - 1);
+                weapons[i] = Weapon.SetWeapon(weaponName);
+            }
+        } else if(GameManager.Instance.round != 1) {
+            Enemy.EnemyType randomType = (Enemy.EnemyType)UnityEngine.Random.Range(0, System.Enum.GetValues(typeof(Enemy.EnemyType)).Length - 3);
             enemy = Enemy.SetEnemy(randomType);
         } else {
             enemy = Enemy.SetEnemy(Enemy.EnemyType.Human);

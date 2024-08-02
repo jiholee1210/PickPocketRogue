@@ -9,7 +9,8 @@ public class Enemy
         Skeleton,
         Orc,
         Dragon,
-        Human
+        Human,
+        Merchant
     }
 
     private float maxHp;
@@ -61,6 +62,9 @@ public class Enemy
                 enemy.SetDmg(enemy.GetWeapon().GetWeaponDmg());
                 enemy.SetAtkType(enemy.GetWeapon().GetWeaponTypeCode());
                 enemy.SetDropRatio(0f);
+                break;
+            case EnemyType.Merchant:
+                enemy = new Enemy(1f, 0f, 0, 0f, 0, EnemyType.Merchant);
                 break;
         }
 

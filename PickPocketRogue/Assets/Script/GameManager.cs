@@ -1,10 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
+    public Text stageText;
+    public Text roundText;
     public int stage;
     public int round;
 
@@ -29,6 +32,7 @@ public class GameManager : MonoBehaviour
     {
         stage = 1;
         round = 1;
+        SetStageAndRoundText();
     }
 
     void StageAndRoundUp(EnemyManager enemyManager) {
@@ -39,7 +43,11 @@ public class GameManager : MonoBehaviour
             round = 1;
             stage++;
         }
+        SetStageAndRoundText();
     }
 
-
+    void SetStageAndRoundText() {
+        stageText.text = "Stage " + stage;
+        roundText.text = "Round " + round;
+    }
 }

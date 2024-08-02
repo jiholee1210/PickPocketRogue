@@ -66,6 +66,7 @@ public class PlayerManager : MonoBehaviour
             Debug.Log("레벨 업!!");
         } else {
             player.SetExp(myExp);
+            UpdatePlayerStats();
             Debug.Log("Max 경험치 : " + player.GetMaxExp() + "현재 경험치 : " + player.GetExp());
         }
     }
