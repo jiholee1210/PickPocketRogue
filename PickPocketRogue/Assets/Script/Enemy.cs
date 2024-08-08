@@ -36,8 +36,6 @@ public class Enemy
         this.defense = _defense;
         this.defenseType = _defenseType;
         this.dropRatio = Random.Range(0.0f, 100.0f);
-        Weapon.WeaponName weaponName = (Weapon.WeaponName)Random.Range(0, System.Enum.GetValues(typeof(Weapon.WeaponName)).Length);
-        this.weapon = Weapon.SetWeapon(weaponName);
         this.enemyType = _enemyType;
     }
 
@@ -59,8 +57,6 @@ public class Enemy
                 break;
             case EnemyType.Human:
                 enemy = new Enemy(50.0f, 0f, 0, 2f, 0, EnemyType.Human);
-                enemy.SetDmg(enemy.GetWeapon().GetWeaponDmg());
-                enemy.SetAtkType(enemy.GetWeapon().GetWeaponTypeCode());
                 enemy.SetDropRatio(0f);
                 break;
             case EnemyType.Merchant:

@@ -11,35 +11,37 @@ public class EnemyManager : MonoBehaviour
 
     public Enemy enemy;
     public EnemyTextManger enemyTextManger;
+    public WeaponManager weaponManager;
 
     public Weapon[] weapons = new Weapon[3];
     // Start is called before the first frame update
     void Awake() {
-        /*if(GameManager.Instance.round != 1) {
-            Enemy.EnemyType randomType = (Enemy.EnemyType)UnityEngine.Random.Range(0, System.Enum.GetValues(typeof(Enemy.EnemyType)).Length - 1);
-            enemy = Enemy.SetEnemy(randomType);
-        } else if(GameManager.Instance.round == 8 && GameManager.Instance.stage % 2 == 0) {
-            enemy = Enemy.SetEnemy(Enemy.EnemyType.Merchant);
-        } else if(GameManager.Instance.round == 1) {
-            enemy = Enemy.SetEnemy(Enemy.EnemyType.Human);
-        }*/
-
+        weaponManager = GetComponent<WeaponManager>();
+        enemyTextManger = GetComponent<EnemyTextManger>();
+        
+    }
+    void Start()
+    {
         if(GameManager.Instance.round == 8 && GameManager.Instance.stage % 2 == 0) {
             enemy = Enemy.SetEnemy(Enemy.EnemyType.Merchant);
             for(int i = 0; i < weapons.Length; i++) {
-                Weapon.WeaponName weaponName = (Weapon.WeaponName)UnityEngine.Random.Range(0, System.Enum.GetValues(typeof(Weapon.WeaponName)).Length - 1);
-                weapons[i] = Weapon.SetWeapon(weaponName);
+                int weaponId = UnityEngine.Random.Range(0, System.Enum.GetValues(typeof(Weapon.WeaponName)).Length);
+                weapons[i] = weaponManager.CreateWeapon(weaponId);
             }
         } else if(GameManager.Instance.round != 1) {
             Enemy.EnemyType randomType = (Enemy.EnemyType)UnityEngine.Random.Range(0, System.Enum.GetValues(typeof(Enemy.EnemyType)).Length - 3);
             enemy = Enemy.SetEnemy(randomType);
+            int weaponId = UnityEngine.Random.Range(0, System.Enum.GetValues(typeof(Weapon.WeaponName)).Length);
+            enemy.SetWeapon(weaponManager.CreateWeapon(weaponId));
         } else {
             enemy = Enemy.SetEnemy(Enemy.EnemyType.Human);
+            int weaponId = UnityEngine.Random.Range(0, System.Enum.GetValues(typeof(Weapon.WeaponName)).Length);
+            Debug.Log(weaponId);
+            enemy.SetWeapon(weaponManager.CreateWeapon(weaponId));
+            enemy.SetDmg(enemy.GetWeapon().GetWeaponDmg());
+            enemy.SetAtkType(enemy.GetWeapon().GetWeaponTypeCode());
         }
-    }
-    void Start()
-    {
-        enemyTextManger = GetComponent<EnemyTextManger>();
+
         enemyTextManger.SetEnemyStatText(this);
         OnEnemySpawned?.Invoke(this);
         Debug.Log("적 생성" + enemy.GetEnemyType() + enemy.GetDropRatio());
