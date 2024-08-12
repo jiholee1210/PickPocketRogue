@@ -23,6 +23,6 @@ public class SpawnManager : MonoBehaviour
     }
     
     public void SpawnObject() {
-        Instantiate(enemyPrefab, new Vector3(5, -2, 0), Quaternion.identity);
+        Instantiate(enemyPrefab, new Vector3(6, 0, 0), Quaternion.identity);
     }
 }

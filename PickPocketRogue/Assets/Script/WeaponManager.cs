@@ -5,11 +5,13 @@ using UnityEngine;
 public class WeaponManager : MonoBehaviour
 {
     private Sprite[] weaponSprites;
+    private Sprite[] armorSprites;
     // Start is called before the first frame update
     void Awake()
     {
         weaponSprites = Resources.LoadAll<Sprite>("Weapon/bronze-weapons");
-        if(weaponSprites.Length == 0) {
+        armorSprites = Resources.LoadAll<Sprite>("Weapon/gold-weapons");
+        if(weaponSprites.Length == 0 || armorSprites.Length == 0) {
             Debug.LogError("스프라이트를 못찾음");
         } else {
             Debug.Log("성공적으로 스프라이트 로드" + weaponSprites.Length);
@@ -29,6 +31,22 @@ public class WeaponManager : MonoBehaviour
             return Weapon.SetWeapon(weaponId, weaponSprite);
         } else {
             Debug.LogWarning("스프라이트가 존재하지 않음 : " + weaponId);
+            return null;
+        }
+    }
+
+    public Armor CreateArmor(int armorId) {
+
+        if (armorId < 0 || armorId >= armorSprites.Length)
+        {
+            Debug.LogWarning("Invalid armorId: " + armorId);
+            return null;
+        }
+        Sprite armorSprite = armorSprites[armorId];
+        if (armorSprite != null) {
+            return Armor.SetArmor(armorId, armorSprite);
+        } else {
+            Debug.LogWarning("스프라이트가 존재하지 않음 : " + armorId);
             return null;
         }
     }

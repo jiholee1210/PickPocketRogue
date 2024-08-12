@@ -47,8 +47,12 @@ public class EventManager : MonoBehaviour
         }
     }
 
-    void HandleEnemyDiedWithDrop(Weapon weapon) {
-        popupManager.ShowPopup(weapon);
+    void HandleEnemyDiedWithDrop((Weapon, Armor) drop) {
+        if(drop.Item1 != null) {
+            popupManager.ShowPopup(drop.Item1);
+        } else {
+            popupManager.ShowPopup(drop.Item2);
+        }
     }
 
     void HandleEnemyDied(EnemyManager enemyManager) {
@@ -76,6 +80,7 @@ public class EventManager : MonoBehaviour
             if(enemyManager.enemy.GetHp() > 0) {
                 playerManager.player.SetHp(playerHp - eDmg);
                 playerManager.playerTextManager.SetPlayerStatText(playerManager);
+                playerManager.UpdateHp();
                 if(playerManager.player.GetHp() < 0) {
                     playerManager.Die();
                 }

@@ -1,13 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
-    public Text stageText;
-    public Text roundText;
+    public TMP_Text stageText;
+    public TMP_Text roundText;
     public int stage;
     public int round;
 

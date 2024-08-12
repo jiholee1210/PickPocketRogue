@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerInventory
 {
     private Weapon weapon = null;
-    private Armor armor;
+    private Armor armor = null;
 
 
 
@@ -16,6 +16,7 @@ public class PlayerInventory
 
     public void SetArmor(Armor armor) {
         this.armor = armor;
+        Debug.Log("플레이어 방어구 장착 : " + armor.GetArmorName());
     }
 
     public Weapon GetWeapon() {

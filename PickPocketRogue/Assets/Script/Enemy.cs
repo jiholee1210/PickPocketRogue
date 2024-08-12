@@ -5,23 +5,22 @@ using UnityEngine;
 public class Enemy
 {
     public enum EnemyType {
-        Slime,
-        Skeleton,
-        Orc,
-        Dragon,
+        Weapon,
+        Armor,
         Human,
         Merchant
     }
 
+    private Sprite sprite;
     private float maxHp;
     private float currentHp;
-
     private float attackDmg;
     private int attackType;
     private float defense;
     private int defenseType;
     private float dropRatio;
     private Weapon weapon;
+    private Armor armor;
     private EnemyType enemyType;
 
     public Enemy() {
@@ -43,21 +42,14 @@ public class Enemy
         Enemy enemy = null;
 
         switch (enemyType) {
-            case EnemyType.Slime:
-                enemy = new Enemy(10.0f, 2.0f, 1, 0.0f, 1, EnemyType.Slime);
+            case EnemyType.Weapon:
+                enemy = new Enemy(1f, 0f, 0, 0.0f, 0, EnemyType.Weapon);
                 break;
-            case EnemyType.Skeleton:
-                enemy = new Enemy(20.0f, 4.0f, 2, 1.0f, 1, EnemyType.Skeleton);
-                break;
-            case EnemyType.Orc:
-                enemy = new Enemy(50.0f, 10.0f, 1, 5.0f, 3, EnemyType.Orc);
-                break;
-            case EnemyType.Dragon:
-                enemy = new Enemy(100.0f, 20.0f, 3, 10.0f, 2, EnemyType.Dragon);
+            case EnemyType.Armor:
+                enemy = new Enemy(1f, 0f, 0, 0.0f, 0, EnemyType.Armor);
                 break;
             case EnemyType.Human:
                 enemy = new Enemy(50.0f, 0f, 0, 2f, 0, EnemyType.Human);
-                enemy.SetDropRatio(0f);
                 break;
             case EnemyType.Merchant:
                 enemy = new Enemy(1f, 0f, 0, 0f, 0, EnemyType.Merchant);
@@ -99,6 +91,10 @@ public class Enemy
         this.dropRatio = dropRatio;
     }
 
+    public void SetArmor(Armor armor) {
+        this.armor = armor;
+    }
+
     public float GetHp() {
         return currentHp;
     }
@@ -133,5 +129,9 @@ public class Enemy
 
     public Weapon GetWeapon() {
         return weapon;
+    }
+
+    public Armor GetArmor() {
+        return armor;
     }
 }

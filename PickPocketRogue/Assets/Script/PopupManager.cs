@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -7,24 +8,23 @@ public class PopupManager : MonoBehaviour
 {
     public GameObject weaponPopupWindow;
     public GameObject ShopPopupWindow;
-    public GameObject StatPopupWindow;
-    public Text weaponName;
-    public Text weaponDetail;
 
-    public Text[] weaponNames;
-    public Text[] weaponDetails;
+    public TMP_Text weaponName;
+    public TMP_Text weaponDetail;
+
+    public TMP_Text[] weaponNames;
+    public TMP_Text[] weaponDetails;
 
     public Weapon newWeapon;
     public Weapon[] weaponList;
 
+    public Armor newArmor;
+
     public Image dropWeapon;
     public Image[] shopWeapon;
 
-    public Text playerStat;
-    public Image playerWeapon;
-    private bool isOpen = false;
-
     private PlayerManager playerManager;
+    private int getId = 0;
     // Start is called before the first frame update
     void Start()
     {
@@ -32,25 +32,17 @@ public class PopupManager : MonoBehaviour
         playerManager = FindObjectOfType<PlayerManager>();
     }
 
-    void Update() {
-        if(Input.GetKeyDown(KeyCode.Tab)) {
-            if(isOpen) {
-                StatPopupWindow.SetActive(false);
-                isOpen = false;
-            } else {
-                StatPopup();
-                isOpen = true;
-            }
-        }
-    }
     public void ShowPopup(Weapon weapon) {
         newWeapon = weapon;
-        
-        dropWeapon.sprite = weapon.GetSprite();
-        weaponName.text = weapon.GetWeaponName().ToString();
-        weaponDetail.text = "공격력 : " + weapon.GetWeaponDmg() + 
-                            "\n타입 \t: " + weapon.GetWeaponType() + 
-                            "\n레어도 : " + weapon.GetWeaponRarity();
+        getId = 1;
+        ChangeWeaponText(dropWeapon, weaponName, weaponDetail, weapon);
+        weaponPopupWindow.SetActive(true);
+    }
+
+    public void ShowPopup(Armor armor) {
+        newArmor = armor;
+        getId = 2;
+        ChangeWeaponText(dropWeapon, weaponName, weaponDetail, armor);
         weaponPopupWindow.SetActive(true);
     }
 
@@ -58,36 +50,33 @@ public class PopupManager : MonoBehaviour
         weaponList = weapon;
 
         for (int i = 0; i < weapon.Length; i++) {
-            shopWeapon[i].sprite = weapon[i].GetSprite();
-            weaponNames[i].text = weapon[i].GetWeaponName().ToString();
-            weaponDetails[i].text = "공격력 : " + weapon[i].GetWeaponDmg() + 
-                                "\n타입 \t: " + weapon[i].GetWeaponType() + 
-                                "\n레어도 : " + weapon[i].GetWeaponRarity();
+            ChangeWeaponText(shopWeapon[i], weaponNames[i], weaponDetails[i], weapon[i]);
         }
         ShopPopupWindow.SetActive(true);
     }
 
-    public void StatPopup() {
-        Player player = playerManager.player;
-        float weaponDmg = 0;
-        if(playerManager.playerInventory.GetWeapon() != null) {
-            playerWeapon.sprite = playerManager.playerInventory.GetWeapon().GetSprite();
-            weaponDmg = playerManager.playerInventory.GetWeapon().GetWeaponDmg();
-        } else {
-            playerWeapon.sprite = Resources.Load<Sprite>("Sprites/None");
-            weaponDmg = 0;
-        }
-        playerStat.text = "Lv : " + player.GetLevel() + 
-                            "\nExp : " + player.GetExp() + " / " + player.GetMaxExp() +
-                            "\nHp : " + player.GetHp() + " / " + player.GetMaxHp() +
-                            "\nDmg : " + player.GetDefaultDmg() + " + " + weaponDmg +
-                            "\nDef : " + player.GetDef();
-
-        StatPopupWindow.SetActive(true);
+    private void ChangeWeaponText(Image image, TMP_Text name, TMP_Text detail, Weapon weapon) {
+        image.sprite = weapon.GetSprite();
+        name.text = weapon.GetWeaponName().ToString();
+        detail.text = "공격력 : " + weapon.GetWeaponDmg() + 
+                            "\n타입   : " + weapon.GetWeaponType() + 
+                            "\n레어도 : " + weapon.GetWeaponRarity();
+    }
+    
+    private void ChangeWeaponText(Image image, TMP_Text name, TMP_Text detail, Armor armor) {
+        image.sprite = armor.GetSprite();
+        name.text = armor.GetArmorName().ToString();
+        detail.text = "방어력 : " + armor.GetArmorDef() + 
+                            "\n타입   : " + armor.GetArmorType() + 
+                            "\n레어도 : " + armor.GetArmorRarity();
     }
     
     public void OnYesButtonClicked() {
-        playerManager.AddWeaponToInventory(newWeapon);
+        if(getId == 1) {
+            playerManager.AddWeaponToInventory(newWeapon);
+        } else {
+            playerManager.AddWeaponToInventory(newArmor);
+        }
         weaponPopupWindow.SetActive(false);
     }
 
