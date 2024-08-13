@@ -6,11 +6,12 @@ using UnityEngine.UI;
 
 public class EnemyTextManger : MonoBehaviour
 {
-    [SerializeField] private TMP_Text enemyText;
-
+    public TMP_Text enemyHp;
+    public TMP_Text enemyAtk;
+    public TMP_Text enemyDef;
     // Start is called before the first frame update
     void Awake() {
-        enemyText = GameObject.Find("Base Screen/Enemy Hp").GetComponent<TMP_Text>();
+
     }
     void Start()
     {
@@ -23,10 +24,12 @@ public class EnemyTextManger : MonoBehaviour
          
     }
 
+    public void SetEnemyHpText(EnemyManager enemyManager) {
+        enemyHp.text = enemyManager.enemy.GetHp() + " / " + enemyManager.enemy.GetMaxHp();
+    }
+
     public void SetEnemyStatText(EnemyManager enemyManager) {
-        enemyText.text = "Hp : " + enemyManager.enemy.GetHp() + " / " + enemyManager.enemy.GetMaxHp() +
-                            "\nDmg : " + enemyManager.enemy.GetDmg() +
-                            "\nDef : " + enemyManager.enemy.GetDef();
-        
+        enemyAtk.text = enemyManager.enemy.GetDmg().ToString();
+        enemyDef.text = enemyManager.enemy.GetDef().ToString();
     }
 }

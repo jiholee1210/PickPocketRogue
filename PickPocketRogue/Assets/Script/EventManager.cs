@@ -76,7 +76,7 @@ public class EventManager : MonoBehaviour
         float pDmg = enemyDef > playerDmg ? 0f : playerDmg - enemyDef;
         if(enemyManager.enemy.GetEnemyType() != Enemy.EnemyType.Merchant) {
             enemyManager.enemy.SetHp(enemyHp - pDmg);
-            enemyManager.enemyTextManger.SetEnemyStatText(enemyManager);
+            enemyManager.UpdateHp();
             if(enemyManager.enemy.GetHp() > 0) {
                 playerManager.player.SetHp(playerHp - eDmg);
                 playerManager.playerTextManager.SetPlayerStatText(playerManager);

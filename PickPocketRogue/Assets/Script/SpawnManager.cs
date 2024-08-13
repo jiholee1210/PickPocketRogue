@@ -19,7 +19,7 @@ public class SpawnManager : MonoBehaviour
 
     void Start() {
         gameManager = GetComponent<GameManager>();
-        SpawnObject();
+        //SpawnObject();
     }
     
     public void SpawnObject() {
