@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.iOS;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -83,7 +84,7 @@ public class EnemyManager : MonoBehaviour
                 enemy.SetDefType(enemy.GetArmor().GetArmorTypeCode());
                 break;
             case Enemy.EnemyType.Human:
-                spriteRenderer.sprite = Resources.Load<Sprite>("Sprites/human");
+                spriteRenderer.sprite = Resources.Load<Sprite>("Sprites/enemy1");
                 enemy.SetWeapon(weaponManager.CreateWeapon(weaponId));
                 enemy.SetDmg(enemy.GetWeapon().GetWeaponDmg());
                 enemy.SetAtkType(enemy.GetWeapon().GetWeaponTypeCode());
@@ -124,6 +125,7 @@ public class EnemyManager : MonoBehaviour
             enemy = Enemy.SetEnemy(Enemy.EnemyType.Merchant);
             hpBar.gameObject.SetActive(false);
             icon.SetActive(false);
+            spriteRenderer.sprite = Resources.Load<Sprite>("Sprites/merchant");
             for(int i = 0; i < weapons.Length; i++) {
                 int weaponId = UnityEngine.Random.Range(0, System.Enum.GetValues(typeof(Weapon.WeaponName)).Length);
                 weapons[i] = weaponManager.CreateWeapon(weaponId);
@@ -147,7 +149,7 @@ public class EnemyManager : MonoBehaviour
                     enemy.SetDefType(enemy.GetArmor().GetArmorTypeCode());
                     break;
                 case Enemy.EnemyType.Human:
-                    spriteRenderer.sprite = Resources.Load<Sprite>("Sprites/human");
+                    spriteRenderer.sprite = Resources.Load<Sprite>("Sprites/enemy1");
                     enemy.SetWeapon(weaponManager.CreateWeapon(weaponId));
                     enemy.SetDmg(enemy.GetWeapon().GetWeaponDmg());
                     enemy.SetAtkType(enemy.GetWeapon().GetWeaponTypeCode());

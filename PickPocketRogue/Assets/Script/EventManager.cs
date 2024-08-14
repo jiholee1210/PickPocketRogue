@@ -13,8 +13,11 @@ public class EventManager : MonoBehaviour
     private PopupManager popupManager;
     private EnemyManager enemyManager;
     private PlayerManager playerManager;
+    private PlayerMovement playerMovement;
 
     public GameObject[] shopItems;
+
+    private bool isAttacking = false;
 
     void OnEnable(){
         EnemyManager.OnEnemySpawned += UpdateEnemyReference;
@@ -32,6 +35,7 @@ public class EventManager : MonoBehaviour
         enemy = GameObject.FindWithTag("Enemy");
         playerManager = player.GetComponent<PlayerManager>();
         popupManager = FindObjectOfType<PopupManager>();
+        playerMovement = player.GetComponent<PlayerMovement>();
     }
 
     void UpdateEnemyReference(EnemyManager _enemyManager) {
@@ -64,6 +68,16 @@ public class EventManager : MonoBehaviour
 
     public void OnClickAttackBtn() {
         Debug.Log("공격 버튼 누름");
+        if(!isAttacking) {
+            StartCoroutine(HandleAttack());
+        }
+    }
+
+    private IEnumerator HandleAttack() {
+        isAttacking = true;
+
+        yield return StartCoroutine(playerMovement.AtkMovement());
+
         float playerDmg = playerManager.player.GetDmg();
         float playerDef = playerManager.player.GetDef();
         float playerHp = playerManager.player.GetHp();
@@ -88,8 +102,8 @@ public class EventManager : MonoBehaviour
         } else {
             Debug.Log("상인을 공격해선 안돼.");
         }
+        isAttacking = false;
     }
-
     public void OnClickStealBtn() {
         Debug.Log("훔치기 버튼 클릭");
 

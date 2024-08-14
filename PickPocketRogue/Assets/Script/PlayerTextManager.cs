@@ -27,10 +27,10 @@ public class PlayerTextManager : MonoBehaviour
         float weaponDmg = playerManager.playerInventory.GetWeapon() != null ? playerManager.playerInventory.GetWeapon().GetWeaponDmg() : 0;
         float armorDef = playerManager.playerInventory.GetArmor() != null ? playerManager.playerInventory.GetArmor().GetArmorDef() : 0;
 
-        playerStat.text = "Lv : " + playerManager.player.GetLevel() +
-                            "\nExp : " + playerManager.player.GetExp() + " / " + playerManager.player.GetMaxExp() +
-                            "\nDmg : " + playerManager.player.GetDefaultDmg() + " + " + weaponDmg +
-                            "\nDef : " + playerManager.player.GetDefaultDef() + " + " + armorDef;
+        playerStat.text = "레벨 : " + playerManager.player.GetLevel() +
+                            "\n경험치 : " + playerManager.player.GetExp() + " / " + playerManager.player.GetMaxExp() +
+                            "\n공격력 : " + playerManager.player.GetDefaultDmg() + " + " + weaponDmg +
+                            "\n방어력 : " + playerManager.player.GetDefaultDef() + " + " + armorDef;
     }
 
     public void SetPlayerHpText(PlayerManager playerManager) {
