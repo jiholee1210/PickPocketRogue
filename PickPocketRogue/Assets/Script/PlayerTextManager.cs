@@ -11,10 +11,12 @@ public class PlayerTextManager : MonoBehaviour
     public TMP_Text playerHp;
     public Image playerWeapon;
     public Image playerArmor;
+    public Image[] rarity = new Image[4];
+    public Sprite[] raritySprites;
     // Start is called before the first frame update
     void Start()
     {
-
+        raritySprites = Resources.LoadAll<Sprite>("Sprites/Rarity");
     }
 
     // Update is called once per frame
@@ -29,8 +31,10 @@ public class PlayerTextManager : MonoBehaviour
 
         playerStat.text = "레벨 : " + playerManager.player.GetLevel() +
                             "\n경험치 : " + playerManager.player.GetExp() + " / " + playerManager.player.GetMaxExp() +
-                            "\n공격력 : " + playerManager.player.GetDefaultDmg() + " + " + weaponDmg +
-                            "\n방어력 : " + playerManager.player.GetDefaultDef() + " + " + armorDef;
+                            "\n데미지 : " + playerManager.player.GetDefaultDmg() + " + " + weaponDmg +
+                            "\n방어력 : " + playerManager.player.GetDefaultDef() + " + " + armorDef +
+                            "\n훔치기 : " + playerManager.player.GetPickLevel() + "단계";
+                            
     }
 
     public void SetPlayerHpText(PlayerManager playerManager) {
@@ -38,14 +42,28 @@ public class PlayerTextManager : MonoBehaviour
     }
 
     public void SetPlayerWeapon(PlayerManager playerManager) {
-        Sprite sprite = playerManager.playerInventory.GetWeapon() != null ? playerManager.playerInventory.GetWeapon().GetSprite(): Resources.Load<Sprite>("Sprites/None");
-
-        playerWeapon.sprite = sprite;
+        Sprite sprite;
+        if(playerManager.playerInventory.GetWeapon() != null) {
+            sprite = playerManager.playerInventory.GetWeapon().GetSprite();
+            playerWeapon.sprite = sprite;
+            rarity[0].sprite = raritySprites[playerManager.playerInventory.GetWeapon().GetWeaponRarity()];
+        } else {
+            sprite = Resources.Load<Sprite>("Sprites/None");
+            playerWeapon.sprite = sprite;
+            rarity[0].sprite = raritySprites[0];
+        }
     }
 
     public void SetPlayerArmor(PlayerManager playerManager) {
-        Sprite sprite = playerManager.playerInventory.GetArmor() != null ? playerManager.playerInventory.GetArmor().GetSprite(): Resources.Load<Sprite>("Sprites/None");
-
-        playerArmor.sprite = sprite;
+        Sprite sprite;
+        if(playerManager.playerInventory.GetArmor() != null) {
+            sprite = playerManager.playerInventory.GetArmor().GetSprite();
+            playerArmor.sprite = sprite;
+            rarity[1].sprite = raritySprites[playerManager.playerInventory.GetArmor().GetArmorRarity()];
+        } else {
+            sprite = Resources.Load<Sprite>("Sprites/None");
+            playerArmor.sprite = sprite;
+            rarity[0].sprite = raritySprites[0];
+        }
     }
 }

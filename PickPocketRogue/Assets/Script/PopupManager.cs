@@ -78,10 +78,12 @@ public class PopupManager : MonoBehaviour
             playerManager.AddWeaponToInventory(newArmor);
         }
         weaponPopupWindow.SetActive(false);
+        Time.timeScale = 1;
     }
 
     public void OnNoButtonClicked() {
         weaponPopupWindow.SetActive(false);
+        Time.timeScale = 1;
     }
 
     public void OnClickBuyButton(Button clickedButton) {
@@ -96,5 +98,6 @@ public class PopupManager : MonoBehaviour
 
     public void OnClickExitButton() {
         ShopPopupWindow.SetActive(false);
+        Time.timeScale = 1;
     }
 }

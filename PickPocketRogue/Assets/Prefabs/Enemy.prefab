@@ -54,7 +54,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -98,9 +98,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2be8dbcb97f6e054cbf3159c3e1b4616, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyTextManger: {fileID: 0}
   weaponManager: {fileID: 0}
   spriteRenderer: {fileID: 0}
+  enemyTextManger: {fileID: 0}
+  hpBar: {fileID: 0}
+  icon: {fileID: 0}
 --- !u!114 &4007069385482186772
 MonoBehaviour:
   m_ObjectHideFlags: 0

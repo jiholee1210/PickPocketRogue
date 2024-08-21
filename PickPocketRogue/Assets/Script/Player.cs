@@ -12,16 +12,17 @@ public class Player
 
     private float defaultDmg;
     private float attackDmg;
+    private float critRatio;
     private float defaultDef;
     private float defense;
 
-    private float pickRatio;
+    private int pickLevel;
 
     public Player() {
 
     }
 
-    public Player(float _maxHp, float _defaultDmg, float _defaultDef, float _pickRatio) {
+    public Player(float _maxHp, float _defaultDmg, float _defaultDef, int _pickLevel, float _critRatio) {
         this.level = 1;
         this.maxExp = 50f;
         this.currentExp = 0f;
@@ -31,7 +32,8 @@ public class Player
         this.attackDmg = _defaultDmg;
         this.defaultDef = _defaultDef;
         this.defense = _defaultDef;
-        this.pickRatio = _pickRatio;
+        this.pickLevel = _pickLevel;
+        this.critRatio = _critRatio;
     }
 
     public void SetLevel(int level) {
@@ -66,8 +68,12 @@ public class Player
         this.defense = def;
     }
 
-    public void SetPickRatio(float pickRatio) {
-        this.pickRatio = pickRatio;
+    public void SetPickRatio(int pickLevel) {
+        this.pickLevel = pickLevel;
+    }
+
+    public void SetCritRatio(float critRatio) {
+        this.critRatio = critRatio;
     }
 
     public int GetLevel() {
@@ -104,7 +110,11 @@ public class Player
         return defense;
     }
 
-    public float GetPickRatio() {
-        return pickRatio;
+    public int GetPickLevel() {
+        return pickLevel;
+    }
+
+    public float GetCritRatio() {
+        return critRatio;
     }
 }

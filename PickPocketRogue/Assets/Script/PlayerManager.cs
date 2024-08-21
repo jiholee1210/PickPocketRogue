@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 using UnityEngine.UI;
 
 public class PlayerManager : MonoBehaviour
@@ -11,12 +12,16 @@ public class PlayerManager : MonoBehaviour
     public PlayerInventory playerInventory;
     public PlayerTextManager playerTextManager;
     public Slider hpBar;
+    public Light2D light;
+    
+    public float[] pickRate = new float[5];
     
     void Awake() {
-        player = new Player(50.0f, 12.0f, 4.0f, 1.0f);
+        player = new Player(40.0f, 5.0f, 1.0f, 4, 5f);
         playerTextManager = GetComponent<PlayerTextManager>();
         playerInventory = new PlayerInventory();
         UpdateHp();
+        UpdatePickRate();
     }
 
     void Start()
@@ -95,6 +100,31 @@ public class PlayerManager : MonoBehaviour
         hpBar.maxValue = player.GetMaxHp();
         hpBar.value = player.GetHp();
         playerTextManager.SetPlayerHpText(this);
+    }
+
+    public void UpdatePickRate() {
+        float[] rateArr = new float[5];
+        switch(player.GetPickLevel()) {
+            case 1:
+                rateArr = new float[] {60f, 40f, 10f, 1f, 0.1f};
+                break;
+            case 2:
+                rateArr = new float[] {75f, 50f, 18f, 3f, 0.5f};
+                break;
+            case 3:
+                rateArr = new float[] {90f, 60f, 30f, 7f, 1.5f};
+                break;
+            case 4:
+                rateArr = new float[] {100f, 75f, 45f, 12f, 5f};
+                break;
+            case 5:
+                rateArr = new float[] {100f, 90f, 65f, 25f, 10f};
+                break;
+            case 6:
+                rateArr = new float[] {100f, 100f, 80f, 45f, 20f};
+                break;
+        }
+        pickRate = rateArr;
     }
 
     public void Die() {

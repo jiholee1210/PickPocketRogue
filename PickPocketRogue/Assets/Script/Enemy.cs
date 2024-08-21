@@ -11,16 +11,19 @@ public class Enemy
         Merchant
     }
 
-    private Sprite sprite;
     private float maxHp;
     private float currentHp;
+
     private float attackDmg;
     private int attackType;
+
     private float defense;
     private int defenseType;
+
     private float dropRatio;
     private Weapon weapon;
     private Armor armor;
+
     private EnemyType enemyType;
 
     public Enemy() {

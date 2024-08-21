@@ -48,7 +48,7 @@ public class GameManager : MonoBehaviour
     }
 
     void SetStageAndRoundText() {
-        stageText.text = "Stage " + stage;
-        roundText.text = "Round " + round;
+        stageText.text = "스테이지 " + stage;
+        roundText.text = "라운드 " + round;
     }
 }

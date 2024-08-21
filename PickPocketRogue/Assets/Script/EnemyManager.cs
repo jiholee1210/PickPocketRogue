@@ -65,38 +65,7 @@ public class EnemyManager : MonoBehaviour
                     break;
             }
         }*/
-
-        Enemy.EnemyType randomType = (Enemy.EnemyType)UnityEngine.Random.Range(0, System.Enum.GetValues(typeof(Enemy.EnemyType)).Length - 1);
-        int weaponId = UnityEngine.Random.Range(0, System.Enum.GetValues(typeof(Weapon.WeaponName)).Length);
-        int armorId = 0;
-        enemy = Enemy.SetEnemy(randomType);
-        switch(randomType) {
-            case Enemy.EnemyType.Weapon:
-                enemy.SetWeapon(weaponManager.CreateWeapon(weaponId));
-                spriteRenderer.sprite = enemy.GetWeapon().GetSprite();
-                enemy.SetDmg(enemy.GetWeapon().GetWeaponDmg());
-                enemy.SetAtkType(enemy.GetWeapon().GetWeaponTypeCode());
-                break;
-            case Enemy.EnemyType.Armor:
-                enemy.SetArmor(weaponManager.CreateArmor(armorId));
-                spriteRenderer.sprite = enemy.GetArmor().GetSprite();
-                enemy.SetDef(enemy.GetArmor().GetArmorDef());
-                enemy.SetDefType(enemy.GetArmor().GetArmorTypeCode());
-                break;
-            case Enemy.EnemyType.Human:
-                spriteRenderer.sprite = Resources.Load<Sprite>("Sprites/enemy1");
-                enemy.SetWeapon(weaponManager.CreateWeapon(weaponId));
-                enemy.SetDmg(enemy.GetWeapon().GetWeaponDmg());
-                enemy.SetAtkType(enemy.GetWeapon().GetWeaponTypeCode());
-                enemy.SetArmor(weaponManager.CreateArmor(armorId));
-                enemy.SetDef(enemy.GetArmor().GetArmorDef());
-                enemy.SetDefType(enemy.GetArmor().GetArmorTypeCode());
-                break;
-        }
-        UpdateHp();
-        enemyTextManger.SetEnemyStatText(this);
-        icon.SetActive(true);
-        hpBar.gameObject.SetActive(true);
+        GenEnemy();
         OnEnemySpawned?.Invoke(this);
         Debug.Log("적 생성" + enemy.GetEnemyType() + enemy.GetDropRatio());
     }
@@ -104,13 +73,7 @@ public class EnemyManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(enemy.GetHp() <= 0.0f) {
-            if(enemy.GetDropRatio() >= 50.0f) {
-                Debug.Log("플레이어 아이템 획득");
-                DropWeapon();
-            }
-            Die();
-        }
+        
     }
 
     public void Attack(Player player) {
@@ -131,43 +94,13 @@ public class EnemyManager : MonoBehaviour
                 weapons[i] = weaponManager.CreateWeapon(weaponId);
             }
         } else {
-            Enemy.EnemyType randomType = (Enemy.EnemyType)UnityEngine.Random.Range(0, System.Enum.GetValues(typeof(Enemy.EnemyType)).Length - 1);
-            int weaponId = UnityEngine.Random.Range(0, System.Enum.GetValues(typeof(Weapon.WeaponName)).Length);
-            int armorId = 0;
-            enemy = Enemy.SetEnemy(randomType);
-            switch(randomType) {
-                case Enemy.EnemyType.Weapon:
-                    enemy.SetWeapon(weaponManager.CreateWeapon(weaponId));
-                    spriteRenderer.sprite = enemy.GetWeapon().GetSprite();
-                    enemy.SetDmg(enemy.GetWeapon().GetWeaponDmg());
-                    enemy.SetAtkType(enemy.GetWeapon().GetWeaponTypeCode());
-                    break;
-                case Enemy.EnemyType.Armor:
-                    enemy.SetArmor(weaponManager.CreateArmor(armorId));
-                    spriteRenderer.sprite = enemy.GetArmor().GetSprite();
-                    enemy.SetDef(enemy.GetArmor().GetArmorDef());
-                    enemy.SetDefType(enemy.GetArmor().GetArmorTypeCode());
-                    break;
-                case Enemy.EnemyType.Human:
-                    spriteRenderer.sprite = Resources.Load<Sprite>("Sprites/enemy1");
-                    enemy.SetWeapon(weaponManager.CreateWeapon(weaponId));
-                    enemy.SetDmg(enemy.GetWeapon().GetWeaponDmg());
-                    enemy.SetAtkType(enemy.GetWeapon().GetWeaponTypeCode());
-                    enemy.SetArmor(weaponManager.CreateArmor(armorId));
-                    enemy.SetDef(enemy.GetArmor().GetArmorDef());
-                    enemy.SetDefType(enemy.GetArmor().GetArmorTypeCode());
-                    break;
-            }
-            UpdateHp();
-            enemyTextManger.SetEnemyStatText(this);
-            icon.SetActive(true);
-            hpBar.gameObject.SetActive(true);
+            GenEnemy();
         }
         OnEnemySpawned?.Invoke(this);
         Debug.Log("적 생성" + enemy.GetEnemyType() + enemy.GetDropRatio());
     }
 
-    private void DropWeapon() {
+    public void DropWeapon() {
         if(enemy.GetWeapon() == null) {
             OnEnemyDiedWithDrop?.Invoke((null, enemy.GetArmor()));
         } else
@@ -177,6 +110,46 @@ public class EnemyManager : MonoBehaviour
     public void UpdateHp() {
         hpBar.maxValue = enemy.GetMaxHp();
         hpBar.value = enemy.GetHp();
-        enemyTextManger.SetEnemyHpText(this);
+    }
+
+    private void GenEnemy() {
+        float spawnEnemy = UnityEngine.Random.Range(0f, 100f);
+        Enemy.EnemyType randomType;
+        if(spawnEnemy < 20f) {
+            randomType = (Enemy.EnemyType)UnityEngine.Random.Range(0, System.Enum.GetValues(typeof(Enemy.EnemyType)).Length - 2);
+        } else {
+            randomType = Enemy.EnemyType.Human;
+        }
+        int weaponId = UnityEngine.Random.Range(0, System.Enum.GetValues(typeof(Weapon.WeaponName)).Length);
+        int armorId = 0;
+        enemy = Enemy.SetEnemy(randomType);
+        switch(randomType) {
+            case Enemy.EnemyType.Weapon:
+                enemy.SetWeapon(weaponManager.CreateWeapon(weaponId));
+                spriteRenderer.sprite = enemy.GetWeapon().GetSprite();
+                enemy.SetDmg(enemy.GetWeapon().GetWeaponDmg());
+                enemy.SetAtkType(enemy.GetWeapon().GetWeaponTypeCode());
+                break;
+            case Enemy.EnemyType.Armor:
+                enemy.SetArmor(weaponManager.CreateArmor(armorId));
+                spriteRenderer.sprite = enemy.GetArmor().GetSprite();
+                enemy.SetDef(enemy.GetArmor().GetArmorDef());
+                enemy.SetDefType(enemy.GetArmor().GetArmorTypeCode());
+                enemy.SetDropRatio(90f);
+                break;
+            case Enemy.EnemyType.Human:
+                spriteRenderer.sprite = Resources.Load<Sprite>("Sprites/enemy1");
+                enemy.SetWeapon(weaponManager.CreateWeapon(weaponId));
+                enemy.SetDmg(enemy.GetWeapon().GetWeaponDmg());
+                enemy.SetAtkType(enemy.GetWeapon().GetWeaponTypeCode());
+                enemy.SetArmor(weaponManager.CreateArmor(armorId));
+                enemy.SetDef(enemy.GetArmor().GetArmorDef());
+                enemy.SetDefType(enemy.GetArmor().GetArmorTypeCode());
+                break;
+        }
+        UpdateHp();
+        enemyTextManger.SetEnemyStatText(this);
+        icon.SetActive(true);
+        hpBar.gameObject.SetActive(true);
     }
 }

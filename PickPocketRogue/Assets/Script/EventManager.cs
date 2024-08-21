@@ -14,10 +14,13 @@ public class EventManager : MonoBehaviour
     private EnemyManager enemyManager;
     private PlayerManager playerManager;
     private PlayerMovement playerMovement;
+    private EnemyMovement enemyMovement;
 
     public GameObject[] shopItems;
 
     private bool isAttacking = false;
+    private bool isStealing = false;
+    private bool canSteal = true;
 
     void OnEnable(){
         EnemyManager.OnEnemySpawned += UpdateEnemyReference;
@@ -36,6 +39,7 @@ public class EventManager : MonoBehaviour
         playerManager = player.GetComponent<PlayerManager>();
         popupManager = FindObjectOfType<PopupManager>();
         playerMovement = player.GetComponent<PlayerMovement>();
+        enemyMovement = enemy.GetComponent<EnemyMovement>();
     }
 
     void UpdateEnemyReference(EnemyManager _enemyManager) {
@@ -57,10 +61,11 @@ public class EventManager : MonoBehaviour
         } else {
             popupManager.ShowPopup(drop.Item2);
         }
+        Time.timeScale = 0f;
     }
 
     void HandleEnemyDied(EnemyManager enemyManager) {
-        if(enemyManager.enemy.GetEnemyType() != Enemy.EnemyType.Human && enemyManager.enemy.GetEnemyType() != Enemy.EnemyType.Merchant) {
+        if(enemyManager.enemy.GetEnemyType() != Enemy.EnemyType.Weapon && enemyManager.enemy.GetEnemyType() != Enemy.EnemyType.Merchant) {
             Debug.Log("플레이어 경험치 획득");
             playerManager.GetExpAndLevelUp(15f);
         }
@@ -75,10 +80,11 @@ public class EventManager : MonoBehaviour
 
     private IEnumerator HandleAttack() {
         isAttacking = true;
-
-        yield return StartCoroutine(playerMovement.AtkMovement());
-
-        float playerDmg = playerManager.player.GetDmg();
+        canSteal = false;
+        playerManager.light.intensity = 1;
+        yield return StartCoroutine(playerMovement.GoToEnemy());
+        float playerCrit = Random.Range(0, 100) < playerManager.player.GetCritRatio() ? 2f: 1f;
+        float playerDmg = playerManager.player.GetDmg() * playerCrit;
         float playerDef = playerManager.player.GetDef();
         float playerHp = playerManager.player.GetHp();
 
@@ -89,41 +95,103 @@ public class EventManager : MonoBehaviour
         float eDmg = playerDef > enemyDmg ? 0f : enemyDmg - playerDef;
         float pDmg = enemyDef > playerDmg ? 0f : playerDmg - enemyDef;
         if(enemyManager.enemy.GetEnemyType() != Enemy.EnemyType.Merchant) {
+            Debug.Log("플레이어 공격 : " + playerDmg);
             enemyManager.enemy.SetHp(enemyHp - pDmg);
             enemyManager.UpdateHp();
+            yield return StartCoroutine(playerMovement.BackToPos());
             if(enemyManager.enemy.GetHp() > 0) {
+                yield return new WaitForSeconds(0.3f);
+                yield return StartCoroutine(enemyMovement.GoToPlayer());
                 playerManager.player.SetHp(playerHp - eDmg);
                 playerManager.playerTextManager.SetPlayerStatText(playerManager);
                 playerManager.UpdateHp();
+                yield return StartCoroutine(enemyMovement.BackToPos());
                 if(playerManager.player.GetHp() < 0) {
                     playerManager.Die();
                 }
+            } else {
+                if(enemyManager.enemy.GetDropRatio() > 80f) {
+                    enemyManager.DropWeapon();
+                }
+                yield return StartCoroutine(PlayerPass());
             }
         } else {
             Debug.Log("상인을 공격해선 안돼.");
         }
         isAttacking = false;
     }
+
     public void OnClickStealBtn() {
         Debug.Log("훔치기 버튼 클릭");
-
-        if(enemyManager.enemy.GetEnemyType() == Enemy.EnemyType.Human) {
-            popupManager.ShowPopup(enemyManager.enemy.GetWeapon());
-            enemyManager.Die();
+        if(!isStealing && canSteal) {
+            StartCoroutine(PlayerSteal());
         } else {
-            Debug.Log("몬스터는 장비를 들고 다니지 않아요..");
+            Debug.Log("들켜버렸다..");
         }
+    }
+
+    private IEnumerator PlayerSteal() {
+        isStealing = true;
+        yield return StartCoroutine(playerMovement.TrySteal());
+        float canPick = 0f;
+        bool stealWeapon = false;
+        switch(enemyManager.enemy.GetEnemyType()) {
+            case(Enemy.EnemyType.Human):
+                stealWeapon = Random.Range(0, 2) == 0 ? true : false;
+                if(stealWeapon) {
+                    canPick = playerManager.pickRate[enemyManager.enemy.GetWeapon().GetWeaponRarity()];
+                } else {
+                    canPick = playerManager.pickRate[enemyManager.enemy.GetArmor().GetArmorRarity()];
+                }
+                break;
+            case(Enemy.EnemyType.Weapon):
+                stealWeapon = true;
+                canPick = playerManager.pickRate[enemyManager.enemy.GetWeapon().GetWeaponRarity()];
+                break;
+            case(Enemy.EnemyType.Armor):
+                canPick = playerManager.pickRate[enemyManager.enemy.GetArmor().GetArmorRarity()];
+                break;
+        }
+        float random = Random.Range(0f, 100f);
+        Debug.Log(random);
+        if(random < canPick) {
+            Time.timeScale = 0f;
+            if(stealWeapon) {
+                popupManager.ShowPopup(enemyManager.enemy.GetWeapon());
+            } else {
+                popupManager.ShowPopup(enemyManager.enemy.GetArmor());
+            }
+             // 아머와 무기 구분해야함.
+            yield return StartCoroutine(PlayerPass());
+        } else {
+            playerManager.light.intensity = 1;
+            yield return StartCoroutine(enemyMovement.FailSteal());
+            yield return StartCoroutine(playerMovement.BackToPos());
+            Debug.Log("훔치기 실패...");
+            canSteal = false;
+        }
+        isStealing = false;
+    }
+
+    private IEnumerator PlayerPass() {
+        playerManager.light.intensity = 0.2f;
+        yield return StartCoroutine(playerMovement.ClearStageOrSteal());
+        canSteal = true;
+        enemyManager.Die();
     }
 
     public void OnClickShopBtn() {
         Debug.Log("상점 오픈");
         popupManager.ShopPopup(enemyManager.weapons);
+        Time.timeScale = 0f;
     }
 
     public void OnClickPassBtn() {
         Debug.Log("상인 지나가기");
         shopButton.SetActive(false);
         passButton.SetActive(false);
-        enemyManager.Die();
+        StartCoroutine(PlayerPass());
     }
+
+
 }

@@ -11,12 +11,13 @@ public class Armor
     private float armorDef;
     private string armorType;
     private int armorTypeCode;
+    private Sprite armorTypeSprite;
 
     public Armor() {
 
     }
 
-    public Armor(int _armorId, string _armorName, Sprite _armorSprite, int _armorRarity, float _armorDef, int _armorTypeCode) {
+    public Armor(int _armorId, string _armorName, Sprite _armorSprite, int _armorRarity, float _armorDef, int _armorTypeCode, Sprite sprite) {
         this.armorId = _armorId;
         this.armorName = _armorName;
         this.armorSprite = _armorSprite;
@@ -25,15 +26,16 @@ public class Armor
         this.armorTypeCode = _armorTypeCode;
         switch (_armorTypeCode) {
             case 1:
-                this.armorType = "타격";
+                this.armorType = "물리방어";
                 break;
             case 2:
-                this.armorType = "관통";
+                this.armorType = "관통방어";
                 break;
             case 3:
-                this.armorType = "마법";
+                this.armorType = "마법저항";
                 break;
         }
+        this.armorTypeSprite = sprite;
     }
 
     public static Armor SetArmor(int armorId, Sprite armorSprite) {
@@ -41,7 +43,7 @@ public class Armor
 
         switch(armorId) {
             case 0:
-                armor = new Armor(0, "armor", armorSprite, 0, 10f, 1);
+                armor = new Armor(0, "armor", armorSprite, 2, 3f, 1, Resources.Load<Sprite>("Sprites/hit type"));
                 break;
         }
 
@@ -65,5 +67,9 @@ public class Armor
     }
     public Sprite GetSprite() {
         return armorSprite;
+    }
+
+    public Sprite GetTypeSprite() {
+        return armorTypeSprite;
     }
 }
