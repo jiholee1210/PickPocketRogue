@@ -1637,6 +1637,7 @@ MonoBehaviour:
   - {fileID: 445568665}
   - {fileID: 1772559388}
   - {fileID: 1106397637}
+  weaponList: []
   dropWeapon: {fileID: 1351135510}
   shopWeapon:
   - {fileID: 679408354}
@@ -1738,7 +1739,7 @@ GameObject:
   - component: {fileID: 511705277}
   - component: {fileID: 511705276}
   m_Layer: 5
-  m_Name: Shoe
+  m_Name: Sub Acc
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2144,8 +2145,8 @@ RectTransform:
   m_Children:
   - {fileID: 1254597020}
   - {fileID: 78363241}
-  - {fileID: 854375256}
   - {fileID: 1449791212}
+  - {fileID: 854375256}
   - {fileID: 511705275}
   - {fileID: 1797501427}
   m_Father: {fileID: 390912871}
@@ -2629,7 +2630,7 @@ GameObject:
   - component: {fileID: 746060726}
   - component: {fileID: 746060725}
   m_Layer: 5
-  m_Name: Image
+  m_Name: Main Acc Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2954,7 +2955,7 @@ GameObject:
   - component: {fileID: 854375258}
   - component: {fileID: 854375257}
   m_Layer: 5
-  m_Name: Accessory1
+  m_Name: Main Acc
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5340,6 +5341,8 @@ MonoBehaviour:
   playerHp: {fileID: 1319427861}
   playerWeapon: {fileID: 2066311339}
   playerArmor: {fileID: 45146501}
+  playerMainAcc: {fileID: 746060725}
+  playerSubAcc: {fileID: 1633906831}
   rarity:
   - {fileID: 1019726681}
   - {fileID: 1760722820}
@@ -6285,7 +6288,7 @@ GameObject:
   - component: {fileID: 1353964522}
   - component: {fileID: 1353964521}
   m_Layer: 5
-  m_Name: Acc rarity
+  m_Name: Main Acc rarity
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6585,7 +6588,7 @@ GameObject:
   - component: {fileID: 1391869975}
   - component: {fileID: 1391869974}
   m_Layer: 5
-  m_Name: Shoe rarity
+  m_Name: Sub Acc rarity
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7028,7 +7031,7 @@ GameObject:
   - component: {fileID: 1633906832}
   - component: {fileID: 1633906831}
   m_Layer: 5
-  m_Name: Image
+  m_Name: Sub Acc Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -75,7 +75,7 @@ public class PopupManager : MonoBehaviour
         if(getId == 1) {
             playerManager.AddWeaponToInventory(newWeapon);
         } else {
-            playerManager.AddWeaponToInventory(newArmor);
+            playerManager.AddArmorToInventory(newArmor);
         }
         weaponPopupWindow.SetActive(false);
         Time.timeScale = 1;

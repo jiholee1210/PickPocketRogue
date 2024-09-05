@@ -17,18 +17,15 @@ public class PlayerManager : MonoBehaviour
     public float[] pickRate = new float[5];
     
     void Awake() {
-        player = new Player(40.0f, 5.0f, 1.0f, 4, 5f);
         playerTextManager = GetComponent<PlayerTextManager>();
         playerInventory = new PlayerInventory();
-        UpdateHp();
-        UpdatePickRate();
     }
 
     void Start()
     {
-        playerTextManager.SetPlayerStatText(this);
-        playerTextManager.SetPlayerWeapon(this);
-        playerTextManager.SetPlayerArmor(this);
+        LoadData();
+        UpdateHp();
+        UpdatePickRate();
     }
     // EventManager에서 기능을 대체 중
     public void Attack(Enemy enemy) { 
@@ -37,13 +34,24 @@ public class PlayerManager : MonoBehaviour
     }
 
     public void AddWeaponToInventory(Weapon weapon) {
+        Debug.Log("무기 추가");
         playerInventory.SetWeapon(weapon);
         UpdatePlayerStatsWithWeapon(weapon);
     }
 
-    public void AddWeaponToInventory(Armor armor) {
+    public void AddArmorToInventory(Armor armor) {
         playerInventory.SetArmor(armor);
-        UpdatePlayerStatsWithWeapon(armor);
+        UpdatePlayerStatsWithArmor(armor);
+    }
+
+    public void AddMainAccToInventory(MainAcc mainAcc) {
+        playerInventory.SetMainAcc(mainAcc);
+        UpdatePlayerStatsWithMainAcc(mainAcc);
+    }
+
+    public void AddSubAccToInventory(SubAcc subAcc) {
+        playerInventory.SetSubAcc(subAcc);
+        UpdatePlayerStatsWithSubAcc(subAcc);
     }
 
     private void UpdatePlayerStatsWithWeapon(Weapon weapon) {
@@ -53,11 +61,22 @@ public class PlayerManager : MonoBehaviour
         Debug.Log("플레이어 장비 스탯 반영!!" + player.GetDmg() + " 플레이어 무기 스탯 : " + weapon.GetWeaponDmg());
     }
 
-    private void UpdatePlayerStatsWithWeapon(Armor armor) {
+    private void UpdatePlayerStatsWithArmor(Armor armor) {
         player.SetDef(player.GetDefaultDef() + armor.GetArmorDef());
+        player.SetMaxHp(player.GetDefaultHp() + armor.GetHp());
         playerTextManager.SetPlayerStatText(this);
         playerTextManager.SetPlayerArmor(this);
         Debug.Log("플레이어 장비 스탯 반영!!" + player.GetDef() + " 플레이어 방어구 스탯 : " + armor.GetArmorDef());
+    }
+
+    private void UpdatePlayerStatsWithMainAcc(MainAcc mainAcc) {
+        playerTextManager.SetPlayerMainAcc(this);
+        Debug.Log("플레이어 장비 스탯 반영!!" + mainAcc.GetAccName());
+    }
+
+    private void UpdatePlayerStatsWithSubAcc(SubAcc subAcc) {
+        playerTextManager.SetPlayerSubAcc(this);
+        Debug.Log("플레이어 장비 스탯 반영!!" + subAcc.GetAccName());
     }
 
     private void UpdatePlayerStats() {
@@ -129,5 +148,29 @@ public class PlayerManager : MonoBehaviour
 
     public void Die() {
 
+    }
+
+    public void LoadData() {
+        DataManager.Instance.LoadData();
+        SaveData loadData = DataManager.Instance.saveData;
+
+        player = new Player(loadData.hp, 
+                            loadData.dmg, 
+                            loadData.def, 
+                            loadData.pickLv, 
+                            loadData.crit);
+
+        player.SetLevel(loadData.level);
+        player.SetHp(loadData.curHp);
+        player.SetExp(loadData.exp);
+        player.SetMaxExp(loadData.maxExp);
+        if(loadData.stage == 1 && loadData.round == 1) {
+            player.SetHp(loadData.hp + ItemLoader.Instance.GetArmor(loadData.armor).GetHp());
+        }
+
+        AddWeaponToInventory(ItemLoader.Instance.GetWeapon(loadData.weapon));
+        AddArmorToInventory(ItemLoader.Instance.GetArmor(loadData.armor));
+        AddMainAccToInventory(ItemLoader.Instance.GetMainAcc(loadData.mainAcc));
+        AddSubAccToInventory(ItemLoader.Instance.GetSubAcc(loadData.subAcc));
     }
 }

@@ -9,6 +9,7 @@ public class Armor
     private Sprite armorSprite;
     private int armorRarity;
     private float armorDef;
+    private float armorHp;
     private string armorType;
     private int armorTypeCode;
     private Sprite armorTypeSprite;
@@ -17,12 +18,13 @@ public class Armor
 
     }
 
-    public Armor(int _armorId, string _armorName, Sprite _armorSprite, int _armorRarity, float _armorDef, int _armorTypeCode, Sprite sprite) {
+    public Armor(int _armorId, string _armorName, Sprite _armorSprite, int _armorRarity, float _armorDef, float _armorHp, int _armorTypeCode, Sprite sprite) {
         this.armorId = _armorId;
         this.armorName = _armorName;
         this.armorSprite = _armorSprite;
         this.armorRarity = _armorRarity;
         this.armorDef = _armorDef;
+        this.armorHp = _armorHp;
         this.armorTypeCode = _armorTypeCode;
         switch (_armorTypeCode) {
             case 1:
@@ -43,11 +45,15 @@ public class Armor
 
         switch(armorId) {
             case 0:
-                armor = new Armor(0, "armor", armorSprite, 2, 3f, 1, Resources.Load<Sprite>("Sprites/hit type"));
+                armor = new Armor(0, "armor", armorSprite, 2, 3f, 5f, 1, Resources.Load<Sprite>("Sprites/hit type"));
                 break;
         }
 
         return armor;
+    }
+
+    public int GetId() {
+        return armorId;
     }
 
     public string GetArmorName() {
@@ -71,5 +77,9 @@ public class Armor
 
     public Sprite GetTypeSprite() {
         return armorTypeSprite;
+    }
+
+    public float GetHp() {
+        return armorHp;
     }
 }

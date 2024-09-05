@@ -4,6 +4,7 @@ using Microsoft.Unity.VisualStudio.Editor;
 using Unity.VisualScripting;
 using UnityEngine;
 
+[System.Serializable]
 public class Weapon
 {
     public enum WeaponName {
@@ -73,7 +74,9 @@ public class Weapon
 
         return weapon;
     }
-
+    public int GetID() {
+        return weaponId;
+    }
     public WeaponName GetWeaponName() {
         return weaponName;
     }
