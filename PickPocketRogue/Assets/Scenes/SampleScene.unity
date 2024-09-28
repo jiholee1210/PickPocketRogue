@@ -2514,7 +2514,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   shopButton: {fileID: 740018406}
-  passButton: {fileID: 1118822288}
   player: {fileID: 1200504611}
   enemy: {fileID: 0}
   shopItems:
@@ -4521,7 +4520,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1118822289
 RectTransform:
   m_ObjectHideFlags: 0

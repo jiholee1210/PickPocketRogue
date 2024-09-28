@@ -115,7 +115,7 @@ public class EnemyManager : MonoBehaviour
     private void GenEnemy() {
         float spawnEnemy = UnityEngine.Random.Range(0f, 100f);
         Enemy.EnemyType randomType;
-        if(spawnEnemy < 20f) {
+        if(spawnEnemy < 10f) {
             randomType = (Enemy.EnemyType)UnityEngine.Random.Range(0, System.Enum.GetValues(typeof(Enemy.EnemyType)).Length - 2);
         } else {
             randomType = Enemy.EnemyType.Human;

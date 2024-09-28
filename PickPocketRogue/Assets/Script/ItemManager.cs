@@ -140,18 +140,22 @@ public class ItemManager : MonoBehaviour
         float hp = armor != null ? armor.GetHp() : 0;
         float dmg = weapon != null ? weapon.GetWeaponDmg() : 0;
         float def = armor != null ? armor.GetArmorDef() : 0;
+        float mPick = mainAcc != null ? mainAcc.GetPickLevel() : 0;
+        float sPick = subAcc != null ? subAcc.GetPickLevel() : 0;
+
+
 
         stat.text = "HP : " + hp +
                     "\n데미지 : " + dmg +
                     "\n방어력 : " + def +
-                    "\n훔치기 : 0 단계";
+                    "\n훔치기 : " + (DataManager.Instance.playerData.pickLv + mPick + sPick) + " 단계";
     }
 
     public void SaveAndStart() {
-        DataManager.Instance.saveData.weapon = weapon.GetID();
-        DataManager.Instance.saveData.armor = armor.GetId();
-        DataManager.Instance.saveData.mainAcc = mainAcc.GetAccId();
-        DataManager.Instance.saveData.subAcc = subAcc.GetAccId();
+        DataManager.Instance.saveData.weapon = weapon != null ? weapon.GetID() : -1;
+        DataManager.Instance.saveData.armor = armor != null ? armor.GetId() : -1;
+        DataManager.Instance.saveData.mainAcc = mainAcc != null ? mainAcc.GetAccId() : -1;
+        DataManager.Instance.saveData.subAcc = subAcc != null ? subAcc.GetAccId() : -1;
 
         DataManager.Instance.saveData.level = 1;
         DataManager.Instance.saveData.exp = 0f;

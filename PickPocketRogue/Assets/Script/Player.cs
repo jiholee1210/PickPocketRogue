@@ -74,7 +74,7 @@ public class Player
         this.defense = def;
     }
 
-    public void SetPickRatio(int pickLevel) {
+    public void SetPickLevel(int pickLevel) {
         this.pickLevel = pickLevel;
     }
 

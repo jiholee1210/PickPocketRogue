@@ -28,7 +28,7 @@ public class PlayerData {
     public float dmg = 5f;
     public float def = 1f;
     public float crit = 5f;
-    public int pickLv = 0;
+    public int pickLv = 1;
     public int statPt = 0;
 
     public bool[] haveWeapon = {false};

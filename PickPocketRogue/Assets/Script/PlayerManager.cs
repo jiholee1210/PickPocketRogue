@@ -35,48 +35,68 @@ public class PlayerManager : MonoBehaviour
 
     public void AddWeaponToInventory(Weapon weapon) {
         Debug.Log("무기 추가");
-        playerInventory.SetWeapon(weapon);
         UpdatePlayerStatsWithWeapon(weapon);
+        
     }
 
     public void AddArmorToInventory(Armor armor) {
-        playerInventory.SetArmor(armor);
         UpdatePlayerStatsWithArmor(armor);
     }
 
     public void AddMainAccToInventory(MainAcc mainAcc) {
-        playerInventory.SetMainAcc(mainAcc);
         UpdatePlayerStatsWithMainAcc(mainAcc);
     }
 
     public void AddSubAccToInventory(SubAcc subAcc) {
-        playerInventory.SetSubAcc(subAcc);
         UpdatePlayerStatsWithSubAcc(subAcc);
     }
 
     private void UpdatePlayerStatsWithWeapon(Weapon weapon) {
-        player.SetDmg(player.GetDefaultDmg() + weapon.GetWeaponDmg());
+        if(weapon != null) {
+            playerInventory.SetWeapon(weapon);
+            player.SetDmg(player.GetDefaultDmg() + weapon.GetWeaponDmg());
+            Debug.Log("플레이어 장비 스탯 반영!!" + player.GetDmg() + " 플레이어 무기 스탯 : " + weapon.GetWeaponDmg());
+        }
         playerTextManager.SetPlayerStatText(this);
         playerTextManager.SetPlayerWeapon(this);
-        Debug.Log("플레이어 장비 스탯 반영!!" + player.GetDmg() + " 플레이어 무기 스탯 : " + weapon.GetWeaponDmg());
     }
 
     private void UpdatePlayerStatsWithArmor(Armor armor) {
-        player.SetDef(player.GetDefaultDef() + armor.GetArmorDef());
-        player.SetMaxHp(player.GetDefaultHp() + armor.GetHp());
+        if(armor != null) {
+            playerInventory.SetArmor(armor);
+            player.SetDef(player.GetDefaultDef() + armor.GetArmorDef());
+            player.SetMaxHp(player.GetDefaultHp() + armor.GetHp());
+            if(player.GetHp() + armor.GetHp() >= player.GetMaxHp()) {
+                player.SetHp(player.GetMaxHp());
+            } else {
+                player.SetHp(player.GetHp() + armor.GetHp());
+            }
+            Debug.Log("플레이어 장비 스탯 반영!!" + player.GetDef() + " 플레이어 방어구 스탯 : " + armor.GetArmorDef());
+        }
         playerTextManager.SetPlayerStatText(this);
         playerTextManager.SetPlayerArmor(this);
-        Debug.Log("플레이어 장비 스탯 반영!!" + player.GetDef() + " 플레이어 방어구 스탯 : " + armor.GetArmorDef());
     }
 
     private void UpdatePlayerStatsWithMainAcc(MainAcc mainAcc) {
+        if(mainAcc != null) {
+            playerInventory.SetMainAcc(mainAcc);
+            player.SetPickLevel(player.GetPickLevel() + mainAcc.GetPickLevel());
+            Debug.Log("플레이어 장비 스탯 반영!!" + mainAcc.GetAccName());
+            UpdatePickRate();
+        }
+        playerTextManager.SetPlayerStatText(this);
         playerTextManager.SetPlayerMainAcc(this);
-        Debug.Log("플레이어 장비 스탯 반영!!" + mainAcc.GetAccName());
     }
 
     private void UpdatePlayerStatsWithSubAcc(SubAcc subAcc) {
-        playerTextManager.SetPlayerSubAcc(this);
-        Debug.Log("플레이어 장비 스탯 반영!!" + subAcc.GetAccName());
+        if(subAcc != null) {
+            playerInventory.SetSubAcc(subAcc);
+            player.SetPickLevel(player.GetPickLevel() + subAcc.GetPickLevel());
+            Debug.Log("플레이어 장비 스탯 반영!!" + subAcc.GetAccName());
+            UpdatePickRate();
+        }
+        playerTextManager.SetPlayerStatText(this);
+        playerTextManager.SetPlayerSubAcc(this);    
     }
 
     private void UpdatePlayerStats() {
@@ -157,20 +177,18 @@ public class PlayerManager : MonoBehaviour
         player = new Player(loadData.hp, 
                             loadData.dmg, 
                             loadData.def, 
-                            loadData.pickLv, 
+                            loadData.pickLv,
                             loadData.crit);
 
         player.SetLevel(loadData.level);
         player.SetHp(loadData.curHp);
         player.SetExp(loadData.exp);
         player.SetMaxExp(loadData.maxExp);
-        if(loadData.stage == 1 && loadData.round == 1) {
-            player.SetHp(loadData.hp + ItemLoader.Instance.GetArmor(loadData.armor).GetHp());
-        }
 
         AddWeaponToInventory(ItemLoader.Instance.GetWeapon(loadData.weapon));
         AddArmorToInventory(ItemLoader.Instance.GetArmor(loadData.armor));
         AddMainAccToInventory(ItemLoader.Instance.GetMainAcc(loadData.mainAcc));
         AddSubAccToInventory(ItemLoader.Instance.GetSubAcc(loadData.subAcc));
     }
+
 }

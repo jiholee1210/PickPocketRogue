@@ -18,7 +18,7 @@ public class SceneChanger : MonoBehaviour
     }
 
     public void OnClickNewGame() {
-        SceneManager.LoadScene("NewGameScene");
+        //SceneManager.LoadScene("NewGameScene");
     }
 
     public void OnClickExit() {

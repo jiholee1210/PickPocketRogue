@@ -7,7 +7,6 @@ using UnityEngine.UI;
 public class EventManager : MonoBehaviour
 {
     public GameObject shopButton;
-    public GameObject passButton;
     public GameObject player;
     [SerializeField] private GameObject enemy;
     private PopupManager popupManager;
@@ -21,6 +20,7 @@ public class EventManager : MonoBehaviour
     private bool isAttacking = false;
     private bool isStealing = false;
     private bool canSteal = true;
+    private bool isPass = false;
 
     void OnEnable(){
         EnemyManager.OnEnemySpawned += UpdateEnemyReference;
@@ -48,7 +48,6 @@ public class EventManager : MonoBehaviour
         enemyManager = _enemyManager;
         if(enemyManager.enemy.GetEnemyType() == Enemy.EnemyType.Merchant) {
             shopButton.SetActive(true);
-            passButton.SetActive(true);
             for(int i = 0; i < shopItems.Length; i++) {
                 shopItems[i].SetActive(true);
             }
@@ -65,7 +64,7 @@ public class EventManager : MonoBehaviour
     }
 
     void HandleEnemyDied(EnemyManager enemyManager) {
-        if(enemyManager.enemy.GetEnemyType() != Enemy.EnemyType.Weapon && enemyManager.enemy.GetEnemyType() != Enemy.EnemyType.Merchant) {
+        if(!isPass) {
             Debug.Log("플레이어 경험치 획득");
             playerManager.GetExpAndLevelUp(15f);
         }
@@ -80,9 +79,7 @@ public class EventManager : MonoBehaviour
 
     private IEnumerator HandleAttack() {
         isAttacking = true;
-        canSteal = false;
-        playerManager.light.intensity = 1;
-        yield return StartCoroutine(playerMovement.GoToEnemy());
+        
         float playerCrit = Random.Range(0, 100) < playerManager.player.GetCritRatio() ? 2f: 1f;
         float playerDmg = playerManager.player.GetDmg() * playerCrit;
         float playerDef = playerManager.player.GetDef();
@@ -94,7 +91,12 @@ public class EventManager : MonoBehaviour
 
         float eDmg = playerDef > enemyDmg ? 0f : enemyDmg - playerDef;
         float pDmg = enemyDef > playerDmg ? 0f : playerDmg - enemyDef;
-        if(enemyManager.enemy.GetEnemyType() != Enemy.EnemyType.Merchant) {
+        if(enemyManager.enemy.GetEnemyType() != Enemy.EnemyType.Merchant && enemyManager.enemy.GetEnemyType() != Enemy.EnemyType.Weapon && enemyManager.enemy.GetEnemyType() != Enemy.EnemyType.Armor) {
+            canSteal = false;
+            playerManager.light.intensity = 1;
+
+            yield return StartCoroutine(playerMovement.GoToEnemy());
+
             Debug.Log("플레이어 공격 : " + playerDmg);
             enemyManager.enemy.SetHp(enemyHp - pDmg);
             enemyManager.UpdateHp();
@@ -116,7 +118,7 @@ public class EventManager : MonoBehaviour
                 yield return StartCoroutine(PlayerPass());
             }
         } else {
-            Debug.Log("상인을 공격해선 안돼.");
+            Debug.Log("공격불가.");
         }
         isAttacking = false;
     }
@@ -178,6 +180,7 @@ public class EventManager : MonoBehaviour
         yield return StartCoroutine(playerMovement.ClearStageOrSteal());
         canSteal = true;
         enemyManager.Die();
+        isPass = false;
     }
 
     public void OnClickShopBtn() {
@@ -187,11 +190,9 @@ public class EventManager : MonoBehaviour
     }
 
     public void OnClickPassBtn() {
-        Debug.Log("상인 지나가기");
+        Debug.Log("지나가기");
+        isPass = true;
         shopButton.SetActive(false);
-        passButton.SetActive(false);
         StartCoroutine(PlayerPass());
     }
-
-
 }

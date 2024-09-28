@@ -8,16 +8,18 @@ public class MainAcc
     private string accName;
     private Sprite accSprite;
     private int accRarity;
+    private int pickLevel;
 
     public MainAcc() {
 
     }
 
-    public MainAcc(int _accId, string _accName, Sprite _accSprite, int _accRarity) {
+    public MainAcc(int _accId, string _accName, Sprite _accSprite, int _accRarity, int _pickLevel) {
         this.accId = _accId;
         this.accName = _accName;
         this.accSprite = _accSprite;
         this.accRarity = _accRarity;
+        this.pickLevel = _pickLevel;
     }
 
     public static MainAcc SetAcc(int accId, Sprite accSprite) {
@@ -25,16 +27,16 @@ public class MainAcc
 
         switch(accId) {
             case 0:
-                acc = new MainAcc(0, "ring1", accSprite, 1);
+                acc = new MainAcc(0, "ring1", accSprite, 1, 1);
                 break;
             case 1:
-                acc = new MainAcc(1, "ring2", accSprite, 1);
+                acc = new MainAcc(1, "ring2", accSprite, 1, 1);
                 break;
             case 2:
-                acc = new MainAcc(2, "ring3", accSprite, 1);
+                acc = new MainAcc(2, "ring3", accSprite, 1, 1);
                 break;
             case 3:
-                acc = new MainAcc(3, "ring4", accSprite, 1);
+                acc = new MainAcc(3, "ring4", accSprite, 1, 1);
                 break;
         }
 
@@ -57,6 +59,10 @@ public class MainAcc
         this.accRarity = _accRarity;
     }
 
+    public void SetPickLevel(int _pickLevel) {
+        this.pickLevel = _pickLevel;
+    }
+
     public int GetAccId() {
         return accId;
     }
@@ -71,5 +77,9 @@ public class MainAcc
 
     public int GetAccRarity() {
         return accRarity;
+    }
+
+    public int GetPickLevel() {
+        return pickLevel;
     }
 }
